@@ -35,4 +35,4 @@ class StudentControler {
   async update(req, res) {}
 }
 
-export default StudentControler;
+export default new StudentControler();
