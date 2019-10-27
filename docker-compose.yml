@@ -1,7 +1,7 @@
 db: 
   image: mysql:5.7
   restart: always
-  enviroment:
+  environment:
     MYSQL_DATABASE: ${MYSQL_DATABASE}
     MYSQL_USER: ${MYSQL_USER}
     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
