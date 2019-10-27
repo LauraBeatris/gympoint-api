@@ -13,22 +13,26 @@ class UserController {
         .min(6),
     });
 
+    console.log(req.body);
+
     // Validating the input data
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { email: passedEmail } = req.body;
-
     // Verifying if there's another user register with the same email
-    const userExists = await User.findOne({ where: { email: passedEmail } });
+    const userExists = await User.findOne({ where: { email: req.body.email } });
 
     if (userExists) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
     // Destructuring just the necessary data to return
-    const { name, email } = await User.create(req.body);
+    const { name, email } = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    });
 
     return res.json({ name, email });
   }

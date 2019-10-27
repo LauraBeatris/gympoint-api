@@ -5,6 +5,7 @@ import SessionController from './app/controllers/SessionController';
 
 const routes = new Router();
 
-routes.get('/', (req, res) => res.json({ msg: 'Testing' }));
+routes.post('/users', UserController.store);
+routes.put('/users', UserController.update);
 
 export default routes;
