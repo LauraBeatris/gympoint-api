@@ -33,6 +33,7 @@ class PlansController {
       return true;
     });
 
+    // Validating param
     const { plan_id } = req.params;
 
     if (!plan_id) {
@@ -41,24 +42,39 @@ class PlansController {
 
     const { title } = req.body;
 
-    // Veryfing if there's an existing plan with the same name
-    const existingPlan = await Plan.findOne({ where: { title } });
-
-    if (existingPlan) {
-      return res
-        .status(400)
-        .json({ err: "There's already a plan with that name" });
-    }
-
     // Finding the plan and updating
     const plan = await Plan.findByPk(plan_id);
+
+    if (!plan) {
+      return res.status(404).json({ error: 'Plan not found' });
+    }
+
     const { id, duration, price } = await plan.update(req.body);
     await plan.save();
 
     return res.json({ id, title, duration, price });
   }
 
-  async delete(req, res) {}
+  async delete(req, res) {
+    const { plan_id } = req.params;
+
+    // Validating param
+    if (!plan_id) {
+      return res.status(400).json({ err: 'Plan id not provided' });
+    }
+
+    // Finding the plan and deleting
+    const plan = await Plan.findByPk(plan_id);
+
+    if (!plan) {
+      return res.status(404).json({ error: 'Plan not found' });
+    }
+
+    // Deleting the plan
+    await plan.destroy();
+
+    return res.json();
+  }
 
   async index(req, res) {}
 }
