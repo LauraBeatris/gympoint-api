@@ -1,24 +1,26 @@
-import * as Yup from 'yup';
+import Joi from 'joi';
 import Student from '../models/Student';
 
 class StudentControler {
   async store(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      email: Yup.string()
+    const schema = Joi.object().keys({
+      name: Joi.string().required(),
+      email: Joi.string()
         .email()
         .required(),
-      age: Yup.number()
+      age: Joi.number()
         .integer()
         .required(),
-      weight: Yup.number().required(),
-      height: Yup.number().required(),
+      weight: Joi.number().required(),
+      height: Joi.number().required(),
     });
 
     // Validating the input data
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
+    Joi.validate(req.body, schema, err => {
+      if (err) {
+        return res.status(400).json({ err: err.details });
+      }
+    });
 
     const { email } = req.body;
 
@@ -38,18 +40,20 @@ class StudentControler {
   async update(req, res) {
     // For updating a student, it needs to provide his/her id as a route param
 
-    const schema = Yup.object().shape({
-      name: Yup.string(),
-      email: Yup.string().email(),
-      age: Yup.number().integer(),
-      weight: Yup.number(),
-      height: Yup.number(),
+    const schema = Joi.object().keys({
+      name: Joi.string(),
+      email: Joi.string().email(),
+      age: Joi.number().integer(),
+      weight: Joi.number(),
+      height: Joi.number(),
     });
 
     // Validating the input data
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
+    Joi.validate(req.body, schema, err => {
+      if (err) {
+        return res.status(400).json({ err: err.details });
+      }
+    });
 
     const { email } = req.body;
 

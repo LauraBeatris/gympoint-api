@@ -1,22 +1,25 @@
+import Joi from 'joi';
 import * as Yup from 'yup';
 import User from '../models/User';
 
 class UserController {
   async store(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      email: Yup.string()
+    const schema = Joi.object().shape({
+      name: Joi.string().required(),
+      email: Joi.string()
         .email()
         .required(),
-      password: Yup.string()
+      password: Joi.string()
         .required()
         .min(6),
     });
 
     // Validating the input data
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
+    Joi.validate(req.body, schema, err => {
+      if (err) {
+        return res.status(400).json({ err: err.details });
+      }
+    });
 
     // Verifying if there's another user register with the same email
     const userExists = await User.findOne({ where: { email: req.body.email } });

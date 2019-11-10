@@ -1,17 +1,20 @@
-import * as Yup from 'yup';
+import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 class SessionController {
   async store(req, res) {
-    const schema = Yup.object().shape({
-      email: Yup.string().required(),
-      password: Yup.string().required(),
+    const schema = Joi.object().keys({
+      email: Joi.string().required(),
+      password: Joi.string().required(),
     });
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
+    // Validating the input data
+    Joi.validate(req.body, schema, err => {
+      if (err) {
+        return res.status(400).json({ err: err.details });
+      }
+    });
 
     const { email, password } = req.body;
 
