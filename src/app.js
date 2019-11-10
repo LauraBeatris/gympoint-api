@@ -5,7 +5,7 @@ import routes from './routes';
 import './database';
 
 dotenv.config({
-  path: process.env.NODE_ENV === 'test' ? '.env.testing' : '.env',
+  path: process.env.NODE_ENV !== 'production' ? '.env.development' : '.env',
 });
 
 class App {
