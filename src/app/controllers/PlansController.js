@@ -76,7 +76,25 @@ class PlansController {
     return res.json();
   }
 
-  async index(req, res) {}
+  async index(req, res) {
+    const { page = 1, title, duration, price } = req.query;
+
+    const query = {};
+
+    // Conditionally building the query object
+    if (title) query.title = title;
+    if (duration) query.duration = duration;
+    if (price) query.price = price;
+
+    const plans = await Plan.findAll({
+      where: { ...query },
+      offset: (page - 1) * 10,
+      limit: 10,
+      attributes: ['title', 'duration', 'price'],
+    });
+
+    return res.json(plans);
+  }
 }
 
 export default new PlansController();
