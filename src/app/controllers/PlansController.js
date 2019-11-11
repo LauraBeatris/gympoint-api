@@ -63,7 +63,7 @@ class PlansController {
       return res.status(400).json({ err: 'Plan id not provided' });
     }
 
-    // Finding the plan and deleting
+    // Finding the plan
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
@@ -73,7 +73,7 @@ class PlansController {
     // Deleting the plan
     await plan.destroy();
 
-    return res.json();
+    return res.json({ msg: `${plan.title} was successfully deleted` });
   }
 
   async index(req, res) {
