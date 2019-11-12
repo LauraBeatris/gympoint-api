@@ -1,22 +1,16 @@
-import Bee from 'bee-queue';
+import kue from 'kue';
+import Sentry from '@sentry/node';
+import redisConfig from '../config/redis';
 
 class Queue {
   constructor() {
-    // Each queue of a specific background job
-    this.queues = {};
+    this.queue = kue.createQueue({ redis: redisConfig });
 
-    // Starting the queues
-    this.init();
+    this.processQueue();
   }
 
-  init() {}
-
-  add() {}
-
-  processQueue() {}
-
-  handleFailure(job, err) {
-    console.log(`Queue ${job.queue.name}: FAILED`, err);
+  processQueue() {
+    this.queue.on('error', Sentry.captureException);
   }
 }
 
