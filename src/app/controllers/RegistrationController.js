@@ -4,6 +4,8 @@ import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plan from '../models/Plan';
 
+import Email from '../../lib/Mail';
+
 import validationSchema from '../../validationSchemas/registrations';
 
 class RegistrationController {
@@ -32,6 +34,17 @@ class RegistrationController {
     const end_date = addMonths(start_date, duration);
     const price = planPrice * duration;
 
+    // Verifying if the user already have a registration
+    const existingRegistration = await Registration.findOne({
+      where: { student_id },
+    });
+
+    if (existingRegistration) {
+      return res.status(401).json({
+        err:
+          'This user already have a registration. Update the current one or delete',
+      });
+    }
     const { id } = await Registration.create({
       start_date,
       end_date,
@@ -40,6 +53,8 @@ class RegistrationController {
       student_id,
     });
 
+    // Sending email with the details
+    Email.sendEmail('hey');
     return res.json({ id, start_date, end_date, price, plan, student_id });
   }
 
