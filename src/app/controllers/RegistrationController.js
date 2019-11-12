@@ -4,8 +4,8 @@ import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plan from '../models/Plan';
 
-import Email from '../../lib/Mail';
-
+import Queue from '../../lib/Queue';
+import RegistrationMail from '../jobs/RegistrationMail';
 import validationSchema from '../../validationSchemas/registrations';
 
 class RegistrationController {
@@ -53,8 +53,16 @@ class RegistrationController {
       student_id,
     });
 
+    const student = await Student.findByPk(student_id);
+
     // Sending email with the details
-    Email.sendEmail('hey');
+    Queue.create(RegistrationMail.key, {
+      start_date,
+      end_date,
+      price,
+      plan,
+      student,
+    });
     return res.json({ id, start_date, end_date, price, plan, student_id });
   }
 
