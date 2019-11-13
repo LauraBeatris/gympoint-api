@@ -1,12 +1,12 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Registration extends Model {
+class HelpOrder extends Model {
   static init(sequelize) {
     super.init(
       {
-        start_date: Sequelize.DATE,
-        end_date: Sequelize.DATE,
-        price: Sequelize.FLOAT,
+        question: Sequelize.STRING,
+        answer: Sequelize.STRING,
+        answer_at: Sequelize.DATE,
       },
       {
         sequelize,
@@ -15,9 +15,8 @@ class Registration extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Plan, { foreignKey: 'plan_id', as: 'plan' });
     this.belongsTo(models.Student, { foreignKey: 'student_id', as: 'student' });
   }
 }
 
-export default Registration;
+export default HelpOrder;
