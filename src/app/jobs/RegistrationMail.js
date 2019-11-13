@@ -7,12 +7,10 @@ class RegistrationEmail {
   }
 
   // Handling the job -> Using nodemailer to send the registration email
-  async handle(data, done) {
-    console.log(data);
-
+  async handle(data) {
+    console.log('hey');
+    console.log('data', data);
     // await Mail.sendEmail({})
-
-    return done();
   }
 }
 

@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/server.js",
+    "queue": "NODE_ENV=development nodemon src/queue.js",
     "start": "NODE_ENV=production node.js",
     "dev:debug": "nodemon --inspect src/server.js",
     "linting-all": "yarn eslint --fix src --ext js"
@@ -22,6 +23,7 @@
   "dependencies": {
     "@sentry/node": "^5.7.1",
     "bcryptjs": "^2.4.3",
+    "beequeue": "^0.3.4",
     "date-fns": "^2.7.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

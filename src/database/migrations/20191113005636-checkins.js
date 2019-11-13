@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('registrations', {
+    return queryInterface.createTable('checkins', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -16,27 +16,6 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      plan_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'plans',
-          key: 'id',
-        },
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE',
-      },
-      price: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-      },
-      end_date: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      start_date: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -49,6 +28,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('registrations');
+    return queryInterface.dropTable('checkins');
   },
 };

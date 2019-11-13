@@ -56,7 +56,7 @@ class RegistrationController {
     const student = await Student.findByPk(student_id);
 
     // Sending email with the details
-    Queue.create(RegistrationMail.key, {
+    Queue.add(RegistrationMail.key, {
       start_date,
       end_date,
       price,
