@@ -6,6 +6,8 @@ import StudentController from './app/controllers/StudentController';
 
 import PlansController from './app/controllers/PlansController';
 import RegistrationController from './app/controllers/RegistrationController';
+import CheckinController from './app/controllers/CheckinController';
+import HelpOrderController from './app/controllers/HelpOrderController';
 
 import AuthMiddleware from './app/middlewares/auth';
 
@@ -14,6 +16,14 @@ const routes = new Router();
 // Creating users, sessions
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+
+// Creating and listing checkins for an specific user
+routes.post('/students/:student_id/checkins', CheckinController.store);
+routes.get('/students/:student_id/checkins', CheckinController.index);
+
+// Creating and listing help orders fon an specific user
+routes.post('/students/:student_id/help_orders', HelpOrderController.store);
+routes.post('/students/:student_id/help_orders', HelpOrderController.index);
 
 routes.use(AuthMiddleware);
 
