@@ -2,6 +2,8 @@ import Joi from 'joi';
 import * as Yup from 'yup';
 import User from '../models/User';
 
+// TO DO -> Put the validate schema in the validators folder
+
 class UserController {
   async store(req, res) {
     const schema = Joi.object().shape({
