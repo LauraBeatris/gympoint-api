@@ -9,7 +9,7 @@ import RegistrationController from './app/controllers/RegistrationController';
 import CheckinController from './app/controllers/CheckinController';
 
 import StudentQuestionController from './app/controllers/StudentQuestionController';
-import HelpOrderController from './app/controllers/HelpOrderController';
+import AnswerOrderController from './app/controllers/AnswerOrderController';
 
 import AuthMiddleware from './app/middlewares/auth';
 
@@ -25,11 +25,11 @@ routes.get('/students/:student_id/checkins', CheckinController.index);
 
 // Creating and listing questions of help orders for an specific user
 routes.post(
-  '/students/:student_id/help_orders',
+  '/students/:student_id/help-orders',
   StudentQuestionController.store
 );
-routes.post(
-  '/students/:student_id/help_orders',
+routes.get(
+  '/students/:student_id/help-orders',
   StudentQuestionController.index
 );
 
@@ -55,9 +55,9 @@ routes.delete('/registrations/:registration_id', RegistrationController.delete);
 routes.get('/registrations', RegistrationController.index);
 
 // Answering questions of help orders from students
-routes.post('/help-orders/:question_id/answer', HelpOrderController.store);
+routes.post('/help-orders/:question_id/answer', AnswerOrderController.store);
 
 // Listing question that aren't answered yet
-routes.get('/help-orders/pending', HelpOrderController.index);
+routes.get('/help-orders/pending', AnswerOrderController.index);
 
 export default routes;

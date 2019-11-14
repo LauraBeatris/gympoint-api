@@ -37,7 +37,7 @@ class QuestionController {
   }
 
   async index(req, res) {
-    const { student_id } = req.body;
+    const { student_id } = req.params;
 
     // Validating student id
     if (!student_id) {
