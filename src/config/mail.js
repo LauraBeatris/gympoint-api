@@ -5,14 +5,11 @@ dotenv.config({
 });
 
 export default {
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  secure: false, // SMTP - true
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    api_key: process.env.MAILGUN_ACTIVE_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN,
   },
   default: {
-    from: 'Laura Beatris - Gympoint Developer',
+    from: 'Laura Beatris <email.lauradeveloper.com>',
   },
 };

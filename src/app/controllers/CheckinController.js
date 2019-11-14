@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, format, getDay, parseISO } from 'date-fns';
+import { differenceInCalendarDays, format, getDay } from 'date-fns';
 import Checkin from '../models/Checkin';
 import Student from '../models/Student';
 
@@ -21,17 +21,6 @@ class CheckinController {
 
     const existingCheckins = await Checkin.findAll({ where: { student_id } });
 
-    // TO DO - Understand better the logic between the limit of checkins in a week
-
-    // Counting the days between the last checking and the current day
-    const daysBetween =
-      existingCheckins[0] && existingCheckins[0].createdAt
-        ? differenceInCalendarDays(
-            Date.now(),
-            existingCheckins[existingCheckins.length].createdAt
-          )
-        : null;
-
     // Verifying if the user made more than 1 checkin per day
     existingCheckins.forEach(checkin => {
       if (getDay(checkin.createdAt) === getDay(Date.now())) {
@@ -44,14 +33,19 @@ class CheckinController {
       }
     });
 
-    // If exists more than 5, the students isn't allowed to do more checkins
+    // Verifying the last days and counting until now to calculate the limit of days (7)
+    const limit =
+      existingCheckins &&
+      existingCheckins.forEach(async checkin => {
+        if (differenceInCalendarDays(Date.now(), checkin.createdAt) > 7) {
+          // Deleting old checkins
+          await Checkin.destroy({ where: { student_id } });
+        }
+      });
+
+    // If exists more than 5, the students areb't allowed to do more checkins
     if (existingCheckins.length >= 5) {
       return res.status(401).json({ err: 'Limit of checkins was reached' });
-    }
-
-    // After 7 days between the the last checkin and the current one, the checkins go back to count 0
-    if (daysBetween > 7) {
-      await Checkin.destroy({ where: { student_id } });
     }
 
     const checkin = await Checkin.create({ student_id });

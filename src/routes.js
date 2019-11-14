@@ -7,7 +7,9 @@ import StudentController from './app/controllers/StudentController';
 import PlansController from './app/controllers/PlansController';
 import RegistrationController from './app/controllers/RegistrationController';
 import CheckinController from './app/controllers/CheckinController';
-import HelpOrderController from './app/controllers/HelpOrderController';
+
+import StudentQuestionController from './app/controllers/StudentQuestionController';
+import AnswerOrderController from './app/controllers/AnswerOrderController';
 
 import AuthMiddleware from './app/middlewares/auth';
 
@@ -21,9 +23,15 @@ routes.post('/sessions', SessionController.store);
 routes.post('/students/:student_id/checkins', CheckinController.store);
 routes.get('/students/:student_id/checkins', CheckinController.index);
 
-// Creating and listing help orders fon an specific user
-routes.post('/students/:student_id/help_orders', HelpOrderController.store);
-routes.post('/students/:student_id/help_orders', HelpOrderController.index);
+// Creating and listing questions of help orders for an specific user
+routes.post(
+  '/students/:student_id/help-orders',
+  StudentQuestionController.store
+);
+routes.get(
+  '/students/:student_id/help-orders',
+  StudentQuestionController.index
+);
 
 routes.use(AuthMiddleware);
 
@@ -45,5 +53,11 @@ routes.post('/registrations', RegistrationController.store);
 routes.put('/registrations/:registration_id', RegistrationController.update);
 routes.delete('/registrations/:registration_id', RegistrationController.delete);
 routes.get('/registrations', RegistrationController.index);
+
+// Answering questions of help orders from students
+routes.post('/help-orders/:question_id/answer', AnswerOrderController.store);
+
+// Listing question that aren't answered yet
+routes.get('/help-orders/pending', AnswerOrderController.index);
 
 export default routes;
