@@ -7,7 +7,7 @@ class RegistrationEmail {
   }
 
   async handle({ data }) {
-    const { start_date, end_date, price, plan, student } = data;
+    const { start_date, end_date, price, student } = data;
     return Mail.sendEmail({
       to: `<${student.email}>`, // An array if you have multiple recipients.
       subject: 'Registration',

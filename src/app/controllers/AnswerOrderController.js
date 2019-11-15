@@ -37,13 +37,14 @@ class HelpOrderController {
     await existingQuestion.update({ answer, answer_at: Date.now() });
     await existingQuestion.save();
 
-    const { email } = await Student.findByPk(existingQuestion.student_id);
+    const { email, name } = await Student.findByPk(existingQuestion.student_id);
 
     const { question, answer_at } = existingQuestion;
 
     // Sending email to the student with the question and his answer
     await Queue.add(HelpOrderEmail.key, {
       email,
+      name,
       question,
       answer,
       answer_at: format(answer_at, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
