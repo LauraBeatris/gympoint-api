@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import mailgunTransporter from 'nodemailer-mailgun-transport';
+import sesTransport from 'nodemailer-ses-transport';
 
 import dotenv from 'dotenv';
 
@@ -11,9 +11,15 @@ dotenv.config({
 
 class Mail {
   constructor() {
-    this.transporter = nodemailer.createTransport(
-      mailgunTransporter({ auth: { ...mailConfig.auth } })
-    );
+    this.transporter = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: 465,
+      secure: true, // upgrade later with STARTTLS
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
 
     this.configureTemplates();
   }
@@ -29,9 +35,9 @@ class Mail {
         ...message,
       },
       (err, info) => {
-        if (err) return console.log('error', err);
+        if (err) return console.log(err);
 
-        return console.log('info', info);
+        return console.log(info);
       }
     );
   }
