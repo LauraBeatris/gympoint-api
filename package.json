@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/server.js",
     "queue": "NODE_ENV=development nodemon src/queue.js",
-    "start": "NODE_ENV=production node.js",
-    "dev:debug": "nodemon --inspect src/server.js",
-    "linting-all": "yarn eslint --fix src --ext js"
+    "start": "node dist/server.js",
+    "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
