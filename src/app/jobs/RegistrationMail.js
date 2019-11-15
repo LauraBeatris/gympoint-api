@@ -8,11 +8,10 @@ class RegistrationEmail {
 
   // Handling the job -> Using nodemailer to send the registration email
   async handle(data) {
-    await Mail.sendEmail({
-      to: 'laurabeatriserafim@gmail.com', // An array if you have multiple recipients.
-      subject: 'Hey you, awesome!',
-      html: '<b>Wow Big powerful letters</b>',
-      text: 'Mailgun rocks, pow pow!',
+    return Mail.sendEmail({
+      to: 'laurigdm@gmail.com', // An array if you have multiple recipients.
+      subject: 'Testingletters</b>',
+      text: 'Email about job',
     });
   }
 }

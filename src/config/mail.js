@@ -10,6 +10,6 @@ export default {
     domain: process.env.MAILGUN_DOMAIN,
   },
   default: {
-    from: 'Laura Beatris <email.lauradeveloper.com>',
+    from: 'Laura Beatris <laurabeatriserafim@gmail.com>',
   },
 };

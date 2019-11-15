@@ -6,7 +6,6 @@ import Plan from '../models/Plan';
 
 import Queue from '../../lib/Queue';
 import RegistrationMail from '../jobs/RegistrationMail';
-import Mail from '../../lib/Mail';
 import validationSchema from '../../validationSchemas/registrations';
 
 class RegistrationController {
@@ -56,20 +55,14 @@ class RegistrationController {
 
     const student = await Student.findByPk(student_id);
 
-    // Sending email with the details
-    // Queue.add(RegistrationMail.key, {
-    //   start_date,
-    //   end_date,
-    //   price,
-    //   plan,
-    //   student,
-    // });
-    await Mail.sendEmail({
-      to: 'laurabeatriserafim@gmail.com.br', // An array if you have multiple recipients.
-      subject: 'Hey you, awesome!',
-      html: '<b>Wow Big powerful letters</b>',
-      text: 'Mailgun rocks, pow pow!',
+    Queue.add(RegistrationMail.key, {
+      start_date,
+      end_date,
+      price,
+      plan,
+      student,
     });
+
     return res.json({ id, start_date, end_date, price, plan, student_id });
   }
 
