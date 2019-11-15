@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { resolve } from 'path';
 import routes from './routes';
 
 import './database';

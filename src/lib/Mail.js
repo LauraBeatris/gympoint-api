@@ -1,8 +1,8 @@
-import nodemailer from 'nodemailer';
-import sesTransport from 'nodemailer-ses-transport';
-
 import dotenv from 'dotenv';
-
+import nodemailer from 'nodemailer';
+import { resolve } from 'path';
+import nodemailerhbs from 'nodemailer-express-handlebars';
+import exphbs from 'express-handlebars';
 import mailConfig from '../config/mail';
 
 dotenv.config({
@@ -25,7 +25,25 @@ class Mail {
   }
 
   // TO DO
-  configureTemplates() {}
+  configureTemplates() {
+    const viewPath = resolve(__dirname, '..', 'app', 'views', 'emails');
+
+    // Configuring the way that the message will be formatted
+    this.transporter.use(
+      'compile',
+      // Defining the view engine configurations - Choosed: Handlebars
+      nodemailerhbs({
+        viewEngine: exphbs.create({
+          layoutsDir: resolve(viewPath, 'layouts'),
+          partialsDir: resolve(viewPath, 'partials'),
+          defaultLayout: 'default',
+          extname: '.hbs',
+        }),
+        viewPath,
+        extName: '.hbs',
+      })
+    );
+  }
 
   // Message object -> All the data expected from the template
   sendEmail(message) {
@@ -35,9 +53,9 @@ class Mail {
         ...message,
       },
       (err, info) => {
-        if (err) return console.log(err);
+        if (err) return console.log('err', err);
 
-        return console.log(info);
+        return console.log('info', info);
       }
     );
   }

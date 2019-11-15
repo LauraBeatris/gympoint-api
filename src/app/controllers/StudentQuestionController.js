@@ -7,7 +7,7 @@ import validationSchema from '../../validationSchemas/helpOrder';
 
 class QuestionController {
   async store(req, res) {
-    Joi.validate(req.body, validationSchema.question, err => {
+    Joi.validate(req.body, validationSchema.storeQuestion, err => {
       if (err) return res.status(400).json({ err: err.details });
 
       return true;
@@ -31,6 +31,7 @@ class QuestionController {
 
     const helpOrder = await HelpOrder.create({
       question,
+      student_id,
     });
 
     return res.json({ helpOrder });
@@ -54,9 +55,11 @@ class QuestionController {
     // Listing all the help orders made by the student
     const helpOrders = await HelpOrder.findAll({
       where: { student_id },
+      attributes: ['id', 'question', 'answer', 'answer_at'],
       include: {
         model: Student,
         as: 'student',
+        attributes: ['id', 'name', 'email', 'weight', 'height'],
       },
     });
 

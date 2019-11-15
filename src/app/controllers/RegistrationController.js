@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { parseISO, addMonths } from 'date-fns';
+import { parseISO, addMonths, format } from 'date-fns';
 import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plan from '../models/Plan';
@@ -55,9 +55,9 @@ class RegistrationController {
 
     const student = await Student.findByPk(student_id);
 
-    Queue.add(RegistrationMail.key, {
-      start_date,
-      end_date,
+    await Queue.add(RegistrationMail.key, {
+      start_date: format(start_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
+      end_date: format(end_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
       price,
       plan,
       student,

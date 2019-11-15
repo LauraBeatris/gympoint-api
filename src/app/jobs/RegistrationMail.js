@@ -6,12 +6,18 @@ class RegistrationEmail {
     return 'RegistrationEmail';
   }
 
-  // Handling the job -> Using nodemailer to send the registration email
-  async handle(data) {
+  async handle({ data }) {
+    const { start_date, end_date, price, plan, student } = data;
     return Mail.sendEmail({
-      to: 'laurigdm@gmail.com', // An array if you have multiple recipients.
-      subject: 'Testingletters</b>',
-      text: 'Email about job',
+      to: `<${student.email}>`, // An array if you have multiple recipients.
+      subject: 'Registration',
+      template: 'registration_confirm',
+      context: {
+        student: student.name,
+        price,
+        end_date,
+        start_date,
+      },
     });
   }
 }
