@@ -6,7 +6,7 @@ import User from '../models/User';
 
 class UserController {
   async store(req, res) {
-    const schema = Joi.object().shape({
+    const schema = Joi.object().keys({
       name: Joi.string().required(),
       email: Joi.string()
         .email()
@@ -41,7 +41,7 @@ class UserController {
   }
 
   async update(req, res) {
-    const schema = Yup.object().shape({
+    const schema = Yup.object().keys({
       name: Yup.string(),
       email: Yup.string().email(),
       oldPassword: Yup.string().min(6),
