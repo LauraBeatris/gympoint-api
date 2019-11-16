@@ -99,7 +99,9 @@ class UserController {
 
     if (!user) return res.status(404).json({ err: 'User not found' });
 
-    return res.json(user);
+    const { name, email } = user;
+
+    return res.json({ name, email });
   }
 }
 
