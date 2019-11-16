@@ -1,20 +1,19 @@
 version: '3.3'
 
 services:
-  db: 
-    image: mysql:5.7
-    restart: always
-    container_name: mysql
+  postgres:
+    container_name: postgres
+    image: postgres
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
     ports:
-      - '3306:3306'
-    expose:
-      - 3306
-
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
   redis:
     image: redis:alpine
     container_name: redis
