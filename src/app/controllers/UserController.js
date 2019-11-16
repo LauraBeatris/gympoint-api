@@ -90,6 +90,17 @@ class UserController {
 
     return res.json({ id, name, email, password });
   }
+
+  // Showing the user data -> After authentication
+  async show(req, res) {
+    const { userId } = req;
+
+    const user = await User.findByPk(userId);
+
+    if (!user) return res.status(404).json({ err: 'User not found' });
+
+    return res.json(user);
+  }
 }
 
 export default new UserController();
