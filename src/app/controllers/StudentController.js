@@ -77,6 +77,37 @@ class StudentControler {
 
     return res.json({ id, name, email, height, weight });
   }
+
+  async index(req, res) {
+    const students = await Student.findAll();
+
+    return res.json(students);
+  }
+
+  async show(req, res) {
+    const { student_id } = req.params;
+
+    if (!student_id)
+      return res.status(400).json({ err: 'Student id not provided' });
+
+    const student = await Student.findByPk(student_id);
+
+    return res.json(student);
+  }
+
+  async delete(req, res) {
+    const { student_id } = req.params;
+
+    if (!student_id)
+      return res.status(400).json({ err: 'Student id not provided' });
+
+    const student = await Student.findByPk(student_id);
+    await student.destroy();
+
+    return res.json({
+      msg: `Student - ${student.name}<${student.email}> deleted successfully`,
+    });
+  }
 }
 
 export default new StudentControler();

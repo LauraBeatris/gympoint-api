@@ -35,9 +35,12 @@ routes.get(
 
 routes.use(AuthMiddleware);
 
-// Creating and updating students
+// Creating, updating, deleting, listing and showing students
 routes.post('/students', StudentController.store);
 routes.put('/students/:student_id', StudentController.update);
+routes.delete('/students/:student_id', StudentController.delete);
+routes.get('/students', StudentController.index);
+routes.get('/students/:student_id', StudentController.show);
 
 // Updating users
 routes.put('/users', UserController.update);
