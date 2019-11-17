@@ -45,6 +45,13 @@ class RegistrationController {
           'This user already have a registration. Update the current one or delete',
       });
     }
+
+    const student = await Student.findByPk(student_id);
+
+    if (!student) {
+      return res.status(404).json({ err: 'Student not found' });
+    }
+
     const { id } = await Registration.create({
       start_date,
       end_date,
@@ -52,12 +59,6 @@ class RegistrationController {
       plan_id,
       student_id,
     });
-
-    const student = await Student.findByPk(student_id);
-
-    if (!student) {
-      return res.status(404).json({ err: 'Student not found' });
-    }
 
     await Queue.add(RegistrationMail.key, {
       start_date: format(start_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
