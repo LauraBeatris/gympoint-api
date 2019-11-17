@@ -6,17 +6,13 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGDATA: /data/postgres
-    volumes:
-       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    networks:
-      - postgres
     restart: unless-stopped
   redis:
     image: redis:alpine
-    container_name: redis
+    container_name: redis-gympoint
     command: redis-server 
     ports:
       - "6379:6379"
+

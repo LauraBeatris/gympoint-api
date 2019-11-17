@@ -5,9 +5,7 @@ import nodemailerhbs from 'nodemailer-express-handlebars';
 import exphbs from 'express-handlebars';
 import mailConfig from '../config/mail';
 
-dotenv.config({
-  path: process.env.NODE_ENV !== 'production' ? '.env.development' : '.env',
-});
+dotenv.config({});
 
 class Mail {
   constructor() {
