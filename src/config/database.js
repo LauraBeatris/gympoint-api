@@ -2,8 +2,6 @@ const dotenv = require('dotenv');
 
 dotenv.config({});
 
-console.log(process.env.POSTGRES_USERNAME);
-
 module.exports = {
   dialect: 'postgres',
   host: process.env.POSTGRES_HOST,
