@@ -55,6 +55,10 @@ class RegistrationController {
 
     const student = await Student.findByPk(student_id);
 
+    if (!student) {
+      return res.status(404).json({ err: 'Student not found' });
+    }
+
     await Queue.add(RegistrationMail.key, {
       start_date: format(start_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
       end_date: format(end_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
