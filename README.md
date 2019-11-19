@@ -33,6 +33,18 @@
 
 Apply the main concepts of API Rest using NodeJS, Express and Sequelize. Develop amazing interfaces using ReactJS for web and React Native for mobile. 
 
+## Status Codes
+
+Gympoint returns the following status codes in its API:
+
+| Status Code | Description |
+| :--- | :--- |
+| 200 | `OK` |
+| 422 | `UNPROCESSABLE ENTITY` |
+| 400 | `BAD REQUEST` |
+| 404 | `NOT FOUND` |
+| 500 | `INTERNAL SERVER ERROR` |
+
 ## :memo: Licence
 
 MIT Licence. See the file [LICENSE](LICENSE.md) for more details.
