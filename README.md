@@ -27,11 +27,15 @@
 </p>
 
 ## :rocket: About the project
-
+  Api for a Gym Management Application. As a admin, you're able to see the students data and answering their help orders. Students are able to do help orders and checkins a long the week.
+  
+  Future features: 
+    - Trainings made by the Personal Trainer
+    - Students can access some datas that show how they've been improving in their trainings
 
 ## :ballot_box_with_check: Goals
 
-Apply the main concepts of API Rest using NodeJS, Express and Sequelize. Develop amazing interfaces using ReactJS for web and React Native for mobile. 
+Apply all the important concepts of a Rest API with Express and Sequelize ORM, using a services like PostgreSQL, MongoDB, Redis with BeeQueue and Nodemailer with Mailgun. 
 
 ## Status Codes
 
