@@ -11,7 +11,7 @@ import './database';
 class App {
   constructor() {
     this.server = express();
-    this.isDev = process.env.NODE_ENV !== 'production';
+    this.isDev = process.env.NODE_ENV === 'development';
 
     // Initializing Sentry
     if (!this.isDev) Sentry.init(process.env.SENTRY_DSN);
@@ -40,7 +40,6 @@ class App {
 
   exceptionHandler() {
     // Middleware responsable for handling exceptions
-
     this.server.use(async (err, req, res, next) => {
       if (process.env.NODE_ENV !== 'production') {
         const errors = await new Youch(err, req).toJSON();

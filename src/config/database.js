@@ -1,4 +1,4 @@
-import '../bootstrap';
+require('../bootstrap');
 
 module.exports = {
   dialect: 'postgres',
