@@ -1,11 +1,9 @@
-import dotenv from 'dotenv';
+import '../bootstrap';
 import nodemailer from 'nodemailer';
 import { resolve } from 'path';
 import nodemailerhbs from 'nodemailer-express-handlebars';
 import exphbs from 'express-handlebars';
 import mailConfig from '../config/mail';
-
-dotenv.config({});
 
 class Mail {
   constructor() {

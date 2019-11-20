@@ -1,5 +1,6 @@
+import './bootstrap';
+
 import express from 'express';
-import dotenv from 'dotenv';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
 import 'express-async-errors';
@@ -7,20 +8,17 @@ import routes from './routes';
 
 import './database';
 
-dotenv.config({
-  path: process.env.NODE_ENV !== 'production' ? '.env.development' : '.env',
-});
-
 class App {
   constructor() {
     this.server = express();
     this.isDev = process.env.NODE_ENV !== 'production';
 
     // Initializing Sentry
-    if (this.isDev) Sentry.init(process.env.SENTRY_DSN);
+    if (!this.isDev) Sentry.init(process.env.SENTRY_DSN);
 
     this.middlewares();
     this.routes();
+    this.exceptionHandler();
   }
 
   middlewares() {
