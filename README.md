@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Gympoint" title="Gympoint" src=".github/logo-readme.gif" width="200px" />
+  <img alt="Gympoint" title="Gympoint" src=".github/logo-readme.gif" width="200px" style="border-radius:100px"/>
 </h1>
 
 <h3 align="center">
