@@ -1,4 +1,5 @@
 import request from 'supertest';
+import bcrypt from 'bcryptjs';
 
 import app from '../../src/app';
 import truncate from '../util/truncate';
@@ -21,7 +22,17 @@ describe('User', () => {
     expect(body).toHaveProperty('id');
   });
 
-  test('should encrypt password after create the user', () => {});
+  test('should encrypt password after create the user', async () => {
+    // Creating the user with factory but overriding the generated password
+    const user = await factory.create('User', {
+      password: '123456',
+    });
+
+    // Comparing the passed password with the hash - It will return a boolean value
+    const compareHash = await bcrypt.compare(user.password, user.password_hash);
+
+    expect(compareHash).toBeTruthy();
+  });
 
   test("shouldn't create an user with an email that already exists", () => {});
 });
