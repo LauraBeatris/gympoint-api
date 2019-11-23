@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 import app from '../../src/app';
 import truncate from '../util/truncate';
 import factory from '../factory';
-import User from '../../src/app/models/User';
 
 describe('User', () => {
   beforeEach(async () => {
@@ -34,5 +33,20 @@ describe('User', () => {
     expect(compareHash).toBeTruthy();
   });
 
-  test("shouldn't create an user with an email that already exists", () => {});
+  test("shouldn't create two user with the same email", async () => {
+    // Generating the users data (Same email)
+    const user = await factory.attrs('User');
+
+    // Posting the data of first user
+    await request(app)
+      .post('/users')
+      .send(user);
+
+    // Posting the data of the second user and getting the response
+    const { status } = await request(app)
+      .post('/users')
+      .send(user);
+
+    expect(status).toBe(400);
+  });
 });
