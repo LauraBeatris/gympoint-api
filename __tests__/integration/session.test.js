@@ -22,7 +22,17 @@ describe('Session', () => {
     expect(body).toHaveProperty('token');
   });
 
-  test("shouldn't create an session with an user that not exists", async () => {});
+  test("shouldn't create an session with an user that not exists", async () => {
+    // Generating the user data but not creating
+    const { email, password } = await factory.attrs('User');
+
+    // Creating an session
+    const { status } = await request(app)
+      .post('/sessions')
+      .send({ email, password });
+
+    expect(status).toBe(401);
+  });
 
   test("shoudn't create an session with an user that not match her/his current password data", () => {});
 });
