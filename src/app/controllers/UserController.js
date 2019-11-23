@@ -31,13 +31,13 @@ class UserController {
     }
 
     // Destructuring just the necessary data to return
-    const { name, email } = await User.create({
+    const { id, name, email } = await User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
     });
 
-    return res.json({ name, email });
+    return res.json({ id, name, email });
   }
 
   async update(req, res) {

@@ -9,7 +9,9 @@
     "queue": "NODE_ENV=production node dist/queue.js",
     "start": "NODE_ENV=production node dist/yarn server.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
-    "test": "jest"
+    "pretest": "NODE_ENV=test yarn sequelize db:migrate",
+    "test": "NODE_ENV=test jest",
+    "posttest": "NODE_ENV=test yarn sequelize db:migrate:undo:all"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
@@ -19,10 +21,13 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
+    "factory-girl": "^5.0.4",
+    "faker": "^4.1.0",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
     "sequelize-cli": "^5.5.1",
-    "sucrase": "^3.10.1"
+    "sucrase": "^3.10.1",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "@sentry/node": "^5.9.0",
@@ -44,6 +49,7 @@
     "pg-hstore": "^2.3.3",
     "prettier": "^1.18.2",
     "sequelize": "^5.21.1",
+    "sqlite3": "^4.1.0",
     "youch": "^2.0.10",
     "yup": "^0.27.0"
   }
