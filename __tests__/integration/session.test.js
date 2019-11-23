@@ -34,5 +34,15 @@ describe('Session', () => {
     expect(status).toBe(401);
   });
 
-  test("shoudn't create an session with an user that not match her/his current password data", () => {});
+  test("shoudn't create an session with an user that not match his current password data", async () => {
+    // Creating the user
+    const { email } = await factory.create('User');
+
+    // Creating an session with an different password
+    const { status } = await request(app)
+      .post('/sessions')
+      .send({ email, password: 123 });
+
+    expect(status).toBe(401);
+  });
 });
