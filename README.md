@@ -2,9 +2,11 @@
   <img alt="Gympoint" title="Gympoint" src=".github/logo-readme.gif" width="200px" style="border-radius:100px"/>
 </h1>
 
+<h2 style="color:red" align="center"> GymPoint </h3>
 <h3 align="center">
-  Conclusion Course Project of Rocketseat GoStack Bootcamp
+  Express Application for a Gym Management App
 </h3>
+
 
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/laurabeatris/projects_store?color=brightgreen&logoColor=black">
