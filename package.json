@@ -28,6 +28,7 @@
     "nodemon": "^1.19.4",
     "sequelize-cli": "^5.5.1",
     "sucrase": "^3.10.1",
+    "superagent": "^5.1.1",
     "supertest": "^4.0.2"
   },
   "dependencies": {

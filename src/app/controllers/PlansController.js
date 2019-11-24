@@ -36,7 +36,7 @@ class PlansController {
     // Validating param
     const { plan_id } = req.params;
 
-    if (!plan_id) {
+    if (!plan_id || !plan_id.match(/^-{0,1}\d+$/)) {
       return res.status(400).json({ err: 'Plan id not provided' });
     }
 
@@ -68,7 +68,7 @@ class PlansController {
     const { plan_id } = req.params;
 
     // Validating param
-    if (!plan_id) {
+    if (!plan_id || !plan_id.match(/^-{0,1}\d+$/)) {
       return res.status(400).json({ err: 'Plan id not provided' });
     }
 

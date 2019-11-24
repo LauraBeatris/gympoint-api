@@ -9,7 +9,7 @@ describe('Session', () => {
     // Deleting all of the old the registers before run each test
     await truncate();
   });
-
+  
   test('should create an session successfully', async () => {
     // Generating the user data
     const user = await factory.attrs('User');

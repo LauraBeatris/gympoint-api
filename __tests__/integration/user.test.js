@@ -3,8 +3,14 @@ import bcrypt from 'bcryptjs';
 
 import app from '../../src/app';
 import factory from '../factory';
+import truncate from '../util/truncate';
 
 describe('User', () => {
+  beforeEach(async () => {
+    // Deleting all of the old the registers before run each test
+    await truncate();
+  });
+
   it('should create the user successfully', async () => {
     // Generating the user data
     const user = await factory.attrs('User');
