@@ -49,6 +49,15 @@ class PlansController {
       return res.status(404).json({ error: 'Plan not found' });
     }
 
+    if (title && title !== plan.title) {
+      const planExist = await Plan.findOne({ where: { title } });
+      if (planExist) {
+        return res
+          .status(400)
+          .json({ err: 'Already exists an plan with that title' });
+      }
+    }
+
     const { id, duration, price } = await plan.update(req.body);
     await plan.save();
 
