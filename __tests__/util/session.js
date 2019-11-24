@@ -1,18 +1,27 @@
-import request from 'supertest';
+const superagent = require('superagent');
+const supertest = require('supertest');
+const app = require('../../src/app');
 
-import app from '../../src/app';
-import factory from '../factory';
+const agent = superagent.agent();
 
-async function createSection() {
-  const user = await factory.attrs('User');
+exports.login = async (request, done) => {
+  const { email, password } = await supertest(app)
+    .post('/users')
+    .send({ name: 'laura', email: 'laura@gmail.com', password: '123456' });
 
-  const { email, password } = user;
+  const theAccount = {
+    email,
+    password,
+  };
 
-  const { body } = await request(app)
+  request
     .post('/sessions')
-    .send({ email, password });
-
-  return body.token;
-}
-
-export default createSection;
+    .send(theAccount)
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+      agent.saveCookies(res);
+      done(agent);
+    });
+};
