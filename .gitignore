@@ -65,3 +65,6 @@ typings/
 
 dist
 
+# Database for test
+__tests__/database.sqlite
+
