@@ -48,8 +48,8 @@ class StudentControler {
     });
 
     const { student_id } = req.params;
-    if (!student_id)
-      return res.status(400).json({ err: 'Student it not provided' });
+    if (!student_id || !student_id.match(/^-{0,1}\d+$/))
+      return res.status(400).json({ err: 'Student id not provided' });
 
     // Validating the input data
     Joi.validate(req.body, schema, err => {
@@ -89,8 +89,7 @@ class StudentControler {
 
   async show(req, res) {
     const { student_id } = req.params;
-
-    if (!student_id)
+    if (!student_id || !student_id.match(/^-{0,1}\d+$/))
       return res.status(400).json({ err: 'Student id not provided' });
 
     const student = await Student.findByPk(student_id);
@@ -100,8 +99,7 @@ class StudentControler {
 
   async delete(req, res) {
     const { student_id } = req.params;
-
-    if (!student_id)
+    if (!student_id || !student_id.match(/^-{0,1}\d+$/))
       return res.status(400).json({ err: 'Student id not provided' });
 
     const student = await Student.findByPk(student_id);
