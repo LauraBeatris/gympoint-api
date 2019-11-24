@@ -1,7 +1,6 @@
 import request from 'supertest';
 
 import app from '../../src/app';
-import factory from '../factory';
 import truncate from '../util/truncate';
 
 describe('Input', () => {
@@ -26,4 +25,6 @@ describe('Input', () => {
     expect(userStatus).toBe(400);
     expect(sessionStatus).toBe(400);
   });
+
+  it('should validate student input data when updated', async () => {});
 });

@@ -18,5 +18,4 @@ factory.define('Student', Student, {
   weight: faker.finance.amount(40, 200, 2),
   height: faker.finance.amount(40, 200, 2),
 });
-
 export default factory;
