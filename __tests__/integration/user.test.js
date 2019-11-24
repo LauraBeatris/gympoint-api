@@ -2,15 +2,15 @@ import request from 'supertest';
 import bcrypt from 'bcryptjs';
 
 import app from '../../src/app';
-import factory from '../factory';
 import truncate from '../util/truncate';
+import factory from '../factory';
 
 describe('User', () => {
   beforeEach(async () => {
     await truncate();
   });
 
-  test('should create the user successfully', async () => {
+  it('should create the user successfully', async () => {
     // Generating the user data
     const user = await factory.attrs('User');
 
@@ -21,7 +21,7 @@ describe('User', () => {
     expect(body).toHaveProperty('id');
   });
 
-  test("shouldn't create two user with the same email", async () => {
+  it("shouldn't create two user with the same email", async () => {
     // Generating the users data (Same email)
     const user = await factory.attrs('User');
 
@@ -38,7 +38,7 @@ describe('User', () => {
     expect(status).toBe(400);
   });
 
-  test('should encrypt password after create the user', async () => {
+  it('should encrypt password after create the user', async () => {
     // Creating the user with factory but overriding the generated password
     const user = await factory.create('User', {
       password: '123456',

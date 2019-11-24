@@ -11,8 +11,15 @@ describe('Session', () => {
   });
 
   test('should create an session successfully', async () => {
+    // Generating the user data
+    const user = await factory.attrs('User');
+
     // Creating the user
-    const { email, password } = await factory.create('User');
+    await request(app)
+      .post('/users')
+      .send(user);
+
+    const { email, password } = user;
 
     // Creating an session
     const { body } = await request(app)
@@ -39,10 +46,10 @@ describe('Session', () => {
     const { email } = await factory.create('User');
 
     // Creating an session with an different password
-    const { status } = await request(app)
+    const res = await request(app)
       .post('/sessions')
-      .send({ email, password: 123 });
+      .send({ email, password: '123' });
 
-    expect(status).toBe(401);
+    expect(res.status).toBe(401);
   });
 });

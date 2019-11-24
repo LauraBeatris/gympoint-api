@@ -1,6 +1,6 @@
 require('../bootstrap');
 
-module.exports = {
+const config = {
   dialect: process.env.DB_DIALECT || 'postgres',
   host: process.env.POSTGRES_HOST,
   database: process.env.POSTGRES_DATABASE,
@@ -14,3 +14,10 @@ module.exports = {
     underscoredAll: true,
   },
 };
+
+if (process.env.DB_DIALECT)
+  config.retry = {
+    max: 10,
+  };
+
+module.exports = config;
