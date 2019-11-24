@@ -14,25 +14,50 @@ describe('Auth', () => {
     // Generating the user data
     const user = await factory.attrs('User');
 
-    // Posting the data  user
+    // Creating the user
     await request(app)
       .post('/users')
       .send(user);
 
     const { email, password } = user;
+
     // Creating an session
-    const { body } = await request(app)
+    const { body: sessionBody } = await request(app)
       .post('/sessions')
       .send({ email, password });
 
-    // // Showing the user data - needs to be authenticated - pass the token as a auth header
-    // const userData = await request(app)
-    //   .get(`/users/${id}`)
-    //   .set('Authorization', `Bearer ${token}`);
-    // console.log(userData.body);
+    /*
+       Showing the plans - needs to be authenticated - pass the token as a auth header
+       Accessing the auth middleware, decrypting the user id with the token and then getting the plans list
+       in the next request
+    */
+    const { status } = await request(app)
+      .get('/plans')
+      .set('Authorization', `Bearer ${sessionBody.token}`);
 
-    expect(body).toHaveProperty('id');
+    // If the user data was returned that means that the user id was passed to the next req
+    expect(status).toBe(200);
   });
 
-  it("if not authenticated, the user shoudn't access the next middleware", async () => {});
+  it("if not authenticated, the user shoudn't access the next middleware", async () => {
+    // Generating the user data
+    const user = await factory.attrs('User');
+
+    const { email, password } = user;
+
+    // Creating an session
+    const { body: sessionBody } = await request(app)
+      .post('/sessions')
+      .send({ email, password });
+
+    /*
+      Passing an invalid token - The auth middleware shouldn't allow to proceed
+    */
+    const { status } = await request(app)
+      .get('/plans')
+      .set('Authorization', `Bearer ${sessionBody.token}`);
+
+    // If the user data was returned that means that the user id was passed to the next req
+    expect(status).toBe(401);
+  });
 });
