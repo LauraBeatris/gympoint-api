@@ -35,7 +35,7 @@ describe('Auth', () => {
       .get('/plans')
       .set('Authorization', `Bearer ${sessionBody.token}`);
 
-    // If the user data was returned that means that the user id was passed to the next req
+    // If the plans data was returned that means that the user id was passed to the next req
     expect(status).toBe(200);
   });
 
@@ -43,10 +43,15 @@ describe('Auth', () => {
     // Generating the user data
     const user = await factory.attrs('User');
 
+    // Creating the user
+    await request(app)
+      .post('/users')
+      .send(user);
+
     const { email, password } = user;
 
     // Creating an session
-    const { body: sessionBody } = await request(app)
+    await request(app)
       .post('/sessions')
       .send({ email, password });
 
@@ -55,9 +60,27 @@ describe('Auth', () => {
     */
     const { status } = await request(app)
       .get('/plans')
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer 123`);
 
-    // If the user data was returned that means that the user id was passed to the next req
+    expect(status).toBe(401);
+  });
+
+  it("if no auth header provided, the user shoudn't access the next middleware", async () => {
+    // Generating the user data
+    const user = await factory.attrs('User');
+
+    const { email, password } = user;
+
+    // Creating an session
+    await request(app)
+      .post('/sessions')
+      .send({ email, password });
+
+    /*
+      Accessing the route without passing an auth header - The auth middleware shouldn't allow to proceed
+    */
+    const { status } = await request(app).get('/plans');
+
     expect(status).toBe(401);
   });
 });
