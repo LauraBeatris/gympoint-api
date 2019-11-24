@@ -69,6 +69,11 @@ describe('Auth', () => {
     // Generating the user data
     const user = await factory.attrs('User');
 
+    // Posting the data of first user
+    await request(app)
+      .post('/users')
+      .send(user);
+
     const { email, password } = user;
 
     // Creating an session
