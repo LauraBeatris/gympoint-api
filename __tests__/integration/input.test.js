@@ -2,11 +2,17 @@ import request from 'supertest';
 
 import app from '../../src/app';
 import truncate from '../util/truncate';
-import factory from '../factory';
+import session from '../util/session';
 
 describe('Input', () => {
-  beforeEach(async () => {
-    // Deleting all of the old the registers before run each test
+  let token = null;
+
+  // Creating session
+  beforeAll(async () => {
+    token = await session();
+  });
+
+  afterAll(async () => {
     await truncate();
   });
 
@@ -28,23 +34,6 @@ describe('Input', () => {
   });
 
   it('should validate plan input data - update & store', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
-    const { token } = sessionBody;
-
     // Creating the plan
     const { status: storeInput } = await request(app)
       .post('/plans')

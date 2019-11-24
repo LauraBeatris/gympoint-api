@@ -1,31 +1,22 @@
 import request from 'supertest';
 
 import app from '../../src/app';
-import factory from '../factory';
 import truncate from '../util/truncate';
+import session from '../util/session';
 
 describe('Auth', () => {
-  beforeEach(async () => {
-    // Deleting all of the old the registers before run each test
+  let token = null;
+
+  // Creating session
+  beforeAll(async () => {
+    token = await session();
+  });
+
+  afterAll(async () => {
     await truncate();
   });
 
   it('if authenticated, the auth middleware should pass the token to next request', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
     /*
        Showing the plans - needs to be authenticated - pass the token as a auth header
        Accessing the auth middleware, decrypting the user id with the token and then getting the plans list
@@ -33,59 +24,26 @@ describe('Auth', () => {
     */
     const { status } = await request(app)
       .get('/plans')
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     // If the plans data was returned that means that the user id was passed to the next req
     expect(status).toBe(200);
   });
 
   it("if not authenticated, the user shoudn't access the next middleware", async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
     /*
       Passing an invalid token - The auth middleware shouldn't allow to proceed
     */
-    const { status } = await request(app)
+    const { status: invalidTokenStatus } = await request(app)
       .get('/plans')
       .set('Authorization', `Bearer 123`);
-
-    expect(status).toBe(401);
-  });
-
-  it("if no auth header provided, the user shoudn't access the next middleware", async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Posting the data of first user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    await request(app)
-      .post('/sessions')
-      .send({ email, password });
 
     /*
       Accessing the route without passing an auth header - The auth middleware shouldn't allow to proceed
     */
-    const { status } = await request(app).get('/plans');
+    const { status: noHeaderStatus } = await request(app).get('/plans');
 
-    expect(status).toBe(401);
+    expect(invalidTokenStatus).toBe(401);
+    expect(noHeaderStatus).toBe(401);
   });
 });

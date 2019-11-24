@@ -9,10 +9,14 @@ describe('Session', () => {
     // Deleting all of the old the registers before run each test
     await truncate();
   });
-  
+
+  afterAll(async () => {
+    await truncate();
+  });
+
   test('should create an session successfully', async () => {
     // Generating the user data
-    const user = await factory.attrs('User');
+    const user = await factory.attrs('User', { password: '123456' });
 
     // Creating the user
     await request(app)
@@ -43,12 +47,12 @@ describe('Session', () => {
 
   test("shoudn't create an session with an user that not match his current password data", async () => {
     // Creating the user
-    const { email } = await factory.create('User');
+    const { email } = await factory.create('User', { password: '123456' });
 
     // Creating an session with an different password
     const res = await request(app)
       .post('/sessions')
-      .send({ email, password: '123' });
+      .send({ email, password: '1234567' });
 
     expect(res.status).toBe(401);
   });

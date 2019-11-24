@@ -1,27 +1,26 @@
-const superagent = require('superagent');
-const supertest = require('supertest');
-const app = require('../../src/app');
+import request from 'supertest';
 
-const agent = superagent.agent();
+import app from '../../src/app';
 
-exports.login = async (request, done) => {
-  const { email, password } = await supertest(app)
+// Generating the user data
+const user = {
+  name: 'laura',
+  email: 'test@user.com',
+  password: '123456',
+};
+
+export default async () => {
+  // Creating the user
+  await request(app)
     .post('/users')
-    .send({ name: 'laura', email: 'laura@gmail.com', password: '123456' });
+    .send(user);
 
-  const theAccount = {
-    email,
-    password,
-  };
+  const { email, password } = user;
 
-  request
+  // Creating an session
+  const { body } = await request(app)
     .post('/sessions')
-    .send(theAccount)
-    .end(function(err, res) {
-      if (err) {
-        throw err;
-      }
-      agent.saveCookies(res);
-      done(agent);
-    });
+    .send({ email, password });
+
+  return body.token;
 };

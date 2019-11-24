@@ -3,31 +3,21 @@ import request from 'supertest';
 import truncate from '../util/truncate';
 import app from '../../src/app';
 import factory from '../factory';
+import session from '../util/session';
 
 describe('Plan', () => {
-  beforeEach(async () => {
-    // Deleting all of the old the registers before run each test
+  let token = null;
+
+  // Creating session
+  beforeAll(async () => {
+    token = await session();
+  });
+
+  afterAll(async () => {
     await truncate();
   });
 
   it('should create a plan succesfully', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
-    const { token } = sessionBody;
-
     // Generating the plan data
     const plan = await factory.attrs('Plan');
 
@@ -41,22 +31,6 @@ describe('Plan', () => {
   });
 
   it("shoudn't create two plans with the same name", async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
-    const { token } = sessionBody;
     // Generating the plan data
     const plan = await factory.attrs('Plan');
 
@@ -76,22 +50,6 @@ describe('Plan', () => {
   });
 
   it("shouldn't update/delete a plan with an invalid plan id", async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
-    const { token } = sessionBody;
     // Generating the plan data
     const plan = await factory.attrs('Plan');
 
@@ -120,22 +78,6 @@ describe('Plan', () => {
   });
 
   it('should delete successfully the plan', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
-    const { token } = sessionBody;
     // Generating the plan data
     const plan = await factory.attrs('Plan');
 
@@ -155,34 +97,19 @@ describe('Plan', () => {
   });
 
   it('should update a plan succesfully', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
     const planData = await factory.attrs('Plan');
 
     // Creating the plan passing the auth header
     const { body: plan } = await request(app)
       .post('/plans')
       .send(planData)
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     // Updating the plan passing the auth header
     const { body: planUpdated } = await request(app)
       .put(`/plans/${plan.id}`)
       .send({ ...planData, title: 'New title' })
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     expect(planUpdated.title).toBe('New title');
   });
@@ -223,34 +150,19 @@ describe('Plan', () => {
   });
 
   it("shoudn't update a with a name that is already used", async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
     const planData = await factory.attrs('Plan');
 
     // Creating the first plan
     await request(app)
       .post('/plans')
       .send(planData)
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     // Creating the second plan
     const { body: willBeUpdated } = await request(app)
       .post('/plans')
       .send({ ...planData, title: 'another title' })
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     const { id } = willBeUpdated;
 
@@ -258,31 +170,16 @@ describe('Plan', () => {
     const { status } = await request(app)
       .put(`/plans/${id}`)
       .send(planData)
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     expect(status).toBe(400);
   });
 
   it('should list plans succesfully', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
     // Updating the plan with an invalid plan id
     const { status } = await request(app)
       .get('/plans')
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     expect(status).toBe(200);
   });

@@ -6,8 +6,10 @@ import factory from '../factory';
 import truncate from '../util/truncate';
 
 describe('User', () => {
+  afterAll(async () => {
+    await truncate();
+  });
   beforeEach(async () => {
-    // Deleting all of the old the registers before run each test
     await truncate();
   });
 
