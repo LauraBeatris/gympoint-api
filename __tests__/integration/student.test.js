@@ -155,14 +155,14 @@ describe('Student', () => {
     const studentData = await factory.attrs('Student');
 
     // Creating the first user
-    const { body: firstStudent } = await request(app)
-      .put('/students')
+    await request(app)
+      .post('/students')
       .send(studentData)
       .set('Authorization', `Bearer ${sessionBody.token}`);
 
     // Creating the second student
     const { body: willBeUpdated } = await request(app)
-      .put('/students')
+      .post('/students')
       .send({ ...studentData, email: 'test@gmail.com' })
       .set('Authorization', `Bearer ${sessionBody.token}`);
 
@@ -171,7 +171,7 @@ describe('Student', () => {
     // Updating the second student data with an email that already exists
     const { status } = await request(app)
       .put(`/students/${id}`)
-      .send({ ...willBeUpdated, email: firstStudent.email })
+      .send(studentData)
       .set('Authorization', `Bearer ${sessionBody.token}`);
 
     expect(status).toBe(400);
