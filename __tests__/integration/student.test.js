@@ -71,9 +71,78 @@ describe('Student', () => {
     expect(updatedStudent.name).toBe('New name');
   });
 
-  it("shouldn't create a student with an email that already exists", async () => {});
+  it("shouldn't create a student with an email that already exists", async () => {
+    // Generating the user data
+    const user = await factory.attrs('User');
 
-  it("shouldn't update a student with an email that already exists", async () => {});
+    // Creating the user
+    await request(app)
+      .post('/users')
+      .send(user);
+
+    const { email, password } = user;
+
+    // Creating an session
+    const { body: sessionBody } = await request(app)
+      .post('/sessions')
+      .send({ email, password });
+
+    const studentData = await factory.attrs('Student');
+
+    // Creating the first user
+    await request(app)
+      .post('/students')
+      .send(studentData)
+      .set('Authorization', `Bearer ${sessionBody.token}`);
+
+    // Creating the second student with a email that already exists
+    const { status } = await request(app)
+      .post('/students')
+      .send({ studentData })
+      .set('Authorization', `Bearer ${sessionBody.token}`);
+
+    expect(status).toBe(400);
+  });
+
+  it("shouldn't update a student with an email that already exists", async () => {
+    // Generating the user data
+    const user = await factory.attrs('User');
+
+    // Creating the user
+    await request(app)
+      .post('/users')
+      .send(user);
+
+    const { email, password } = user;
+
+    // Creating an session
+    const { body: sessionBody } = await request(app)
+      .post('/sessions')
+      .send({ email, password });
+
+    const studentData = await factory.attrs('Student');
+
+    // Creating the first user
+    const { body: firstStudent } = await request(app)
+      .post('/students')
+      .send(studentData)
+      .set('Authorization', `Bearer ${sessionBody.token}`);
+
+    // Creating the second student with a email that already exists
+    const { body: willBeUpdated } = await request(app)
+      .post('/students')
+      .send({ ...studentData, email: 'test@gmail.com' })
+      .set('Authorization', `Bearer ${sessionBody.token}`);
+
+    const { id } = willBeUpdated;
+    // Updating the student data
+    const { status } = await request(app)
+      .put(`/students/${id}`)
+      .send({ ...willBeUpdated, email: firstStudent.email })
+      .set('Authorization', `Bearer ${sessionBody.token}`);
+
+    expect(status).toBe(400);
+  });
 
   it('should pass the student id', async () => {});
 });
