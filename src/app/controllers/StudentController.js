@@ -39,7 +39,6 @@ class StudentControler {
 
   async update(req, res) {
     // For updating a student, it needs to provide his/her id as a route param
-
     const schema = Joi.object().keys({
       name: Joi.string(),
       email: Joi.string().email(),
@@ -47,6 +46,10 @@ class StudentControler {
       weight: Joi.number(),
       height: Joi.number(),
     });
+
+    const { student_id } = req.params;
+    if (!student_id)
+      return res.status(400).json({ err: 'Student it not provided' });
 
     // Validating the input data
     Joi.validate(req.body, schema, err => {
@@ -58,7 +61,7 @@ class StudentControler {
     const { email } = req.body;
 
     // Finding the student register
-    const student = await Student.findByPk(req.params.student_id);
+    const student = await Student.findByPk(student_id);
 
     if (email && email !== student.email) {
       // Verifying if there isn't a student already using this same email.

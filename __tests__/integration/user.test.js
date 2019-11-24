@@ -2,14 +2,9 @@ import request from 'supertest';
 import bcrypt from 'bcryptjs';
 
 import app from '../../src/app';
-import truncate from '../util/truncate';
 import factory from '../factory';
 
 describe('User', () => {
-  beforeEach(async () => {
-    await truncate();
-  });
-
   it('should create the user successfully', async () => {
     // Generating the user data
     const user = await factory.attrs('User');
