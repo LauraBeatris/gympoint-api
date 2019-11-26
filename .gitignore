@@ -68,3 +68,6 @@ dist
 # Database for test
 __tests__/database.sqlite
 
+# Ignore Docker Override Configurations
+docker-compose.override.yml
+docker-compose.override.yaml
