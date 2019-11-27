@@ -5,29 +5,30 @@ import factory from '../factory';
 import truncate from '../util/truncate';
 
 describe('Session', () => {
-  beforeEach(async () => {
-    // Deleting all of the old the registers before run each test
-    await truncate();
-  });
-
-  afterAll(async () => {
+  beforeAll(async () => {
     await truncate();
   });
 
   test('should create an session successfully', async () => {
     // Generating the user data
-    const user = await factory.attrs('User', { password: '123456' });
+    const user = await factory.attrs('User', {
+      name: 'laura',
+      email: 'laura@gmail.com',
+      password: '123456',
+    });
 
     // Creating the user
     await request(app)
       .post('/users')
-      .send(user);
+      .send(user)
+      .expect(200);
 
     const { email, password } = user;
 
     // Creating an session
     const { body } = await request(app)
       .post('/sessions')
+      .expect(200)
       .send({ email, password });
 
     expect(body).toHaveProperty('token');
@@ -45,7 +46,7 @@ describe('Session', () => {
     expect(status).toBe(401);
   });
 
-  test("shoudn't create an session with an user that not match his current password data", async () => {
+  test("shouldn't create an session with an user that not match his current password data", async () => {
     // Creating the user
     const { email } = await factory.create('User', { password: '123456' });
 

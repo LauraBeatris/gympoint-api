@@ -7,34 +7,19 @@ import session from '../util/session';
 
 describe('Student', () => {
   let token = null;
+  let studentData = null;
 
-  // Creating session
+  //Creating a new session 
   beforeAll(async () => {
     token = await session();
   });
 
-  afterAll(async () => {
-    await truncate();
+  beforeEach(async () => {
+    await truncate('Student')
+    studentData = await factory.attrs('Student');
   });
 
   it('should succesfully create a student', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
-    const studentData = await factory.attrs('Student');
-
     // Creating the student passing the auth header
     const { body: student } = await request(app)
       .post('/students')
@@ -45,17 +30,19 @@ describe('Student', () => {
   });
 
   it('should succesfully update a student', async () => {
-    const studentData = await factory.attrs('Student');
-
     // Creating the student passing the auth header
-    const { body: student } = await request(app)
+    const studentResponse = await request(app)
       .post('/students')
       .send(studentData)
       .set('Authorization', `Bearer ${token}`);
 
+    const { body, status } = studentResponse;
+
+    expect(status).toBe(200);
+
     // Updating the student passing the auth header
     const { body: studentUpdated } = await request(app)
-      .put(`/students/${student.id}`)
+      .put(`/students/${body.id}`)
       .send({ ...studentData, name: 'New name' })
       .set('Authorization', `Bearer ${token}`);
 
@@ -63,7 +50,6 @@ describe('Student', () => {
   });
 
   it("shouldn't create two students with the same email", async () => {
-    const studentData = await factory.attrs('Student');
     // Creating first student
     await request(app)
       .post('/students')
@@ -71,35 +57,14 @@ describe('Student', () => {
       .set('Authorization', `Bearer ${token}`);
 
     // Creating the second student with the same email
-    const { status } = await request(app)
-      .post('/students')
-      .send(studentData)
-      .set('Authorization', `Bearer ${token}`);
-
-    expect(status).toBe(400);
-  });
-
-  it("shouldn't create a student with an email that already exists", async () => {
-    const studentData = await factory.attrs('Student');
-
-    // Creating the first user
     await request(app)
       .post('/students')
       .send(studentData)
-      .set('Authorization', `Bearer ${token}`);
-
-    // Creating the second student with a email that already exists
-    const { status } = await request(app)
-      .post('/students')
-      .send({ studentData })
-      .set('Authorization', `Bearer ${token}`);
-
-    expect(status).toBe(400);
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400);
   });
 
   it("shouldn't update a student with an email that already exists", async () => {
-    const studentData = await factory.attrs('Student');
-
     // Creating the first user
     await request(app)
       .post('/students')
@@ -111,7 +76,6 @@ describe('Student', () => {
       .post('/students')
       .send({ ...studentData, email: 'test@gmail.com' })
       .set('Authorization', `Bearer ${token}`);
-
     const { id } = willBeUpdated;
 
     // Updating the second student data with an email that already exists
@@ -124,8 +88,6 @@ describe('Student', () => {
   });
 
   it('should provide the student id', async () => {
-    const studentData = await factory.attrs('Student');
-
     // Not passing the student id to the route
     const { status: showStatus } = await request(app)
       .get(`/students/test`)
@@ -147,10 +109,6 @@ describe('Student', () => {
   });
 
   it('should delete student successfully', async () => {
-    // Generating the user data
-
-    const studentData = await factory.attrs('Student');
-
     // Creating student
     const { body } = await request(app)
       .post('/students')
@@ -168,8 +126,6 @@ describe('Student', () => {
   });
 
   it('should show and list students successfully', async () => {
-    const studentData = await factory.attrs('Student');
-
     // Creating student
     const { body } = await request(app)
       .post('/students')

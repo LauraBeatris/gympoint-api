@@ -1,26 +1,28 @@
 import request from 'supertest';
-
-import truncate from '../util/truncate';
+import faker from 'faker';
 import app from '../../src/app';
 import factory from '../factory';
 import session from '../util/session';
 
 describe('Plan', () => {
   let token = null;
+  let plan = null;
 
-  // Creating session
+  // Creating a new session 
   beforeAll(async () => {
     token = await session();
   });
 
-  afterAll(async () => {
-    await truncate();
+  // Genereting plan data
+  beforeEach(async () => {
+     plan = { 
+       title: faker.name.title(),
+       duration: Math.floor(Math.random() * 11),
+       price: faker.commerce.price()
+     }
   });
 
   it('should create a plan succesfully', async () => {
-    // Generating the plan data
-    const plan = await factory.attrs('Plan');
-
     // Creating the plan
     const { status } = await request(app)
       .post('/plans')
@@ -31,9 +33,6 @@ describe('Plan', () => {
   });
 
   it("shoudn't create two plans with the same name", async () => {
-    // Generating the plan data
-    const plan = await factory.attrs('Plan');
-
     // Creating the first plan
     await request(app)
       .post('/plans')
@@ -50,9 +49,6 @@ describe('Plan', () => {
   });
 
   it("shouldn't update/delete a plan with an invalid plan id", async () => {
-    // Generating the plan data
-    const plan = await factory.attrs('Plan');
-
     // Updating plans with invalid ids
     const { status: putNotFoundStatus } = await request(app)
       .put('/plans/100000')
@@ -78,10 +74,7 @@ describe('Plan', () => {
   });
 
   it('should delete successfully the plan', async () => {
-    // Generating the plan data
-    const plan = await factory.attrs('Plan');
-
-    // Deleting the plan with an invalid id
+    // Creating a plan
     const { body } = await request(app)
       .post('/plans')
       .send(plan)
@@ -97,53 +90,40 @@ describe('Plan', () => {
   });
 
   it('should update a plan succesfully', async () => {
-    const planData = await factory.attrs('Plan');
-
     // Creating the plan passing the auth header
-    const { body: plan } = await request(app)
+    const { body: createdPlan } = await request(app)
       .post('/plans')
-      .send(planData)
-      .set('Authorization', `Bearer ${token}`);
+      .send(plan)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    const { id } = createdPlan 
+    const newTitle = faker.name.title()
 
     // Updating the plan passing the auth header
     const { body: planUpdated } = await request(app)
-      .put(`/plans/${plan.id}`)
-      .send({ ...planData, title: 'New title' })
-      .set('Authorization', `Bearer ${token}`);
+      .put(`/plans/${id}`)
+      .send({ ...plan, title: newTitle})
+      .set('Authorization', `Bearer ${token}`)
 
-    expect(planUpdated.title).toBe('New title');
+    expect(planUpdated.title).toBe(newTitle);
   });
 
   it('should delete a plan succesfully', async () => {});
 
-  it("shoudn't update a plan with an invalid plan id", async () => {
-    // Generating the user data
-    const user = await factory.attrs('User');
-
-    // Creating the user
-    await request(app)
-      .post('/users')
-      .send(user);
-
-    const { email, password } = user;
-
-    // Creating an session
-    const { body: sessionBody } = await request(app)
-      .post('/sessions')
-      .send({ email, password });
-
+  it("shouldn't update a plan with an invalid plan id", async () => {
     const planData = await factory.attrs('Plan');
 
     // Updating the plan with an invalid plan id
     const { status: firstStatus } = await request(app)
       .put(`/plans/111111`)
       .send({ ...planData, title: 'New title' })
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     const { status: secondStatus } = await request(app)
       .put(`/plans/aaa`)
       .send({ ...planData, title: 'New title' })
-      .set('Authorization', `Bearer ${sessionBody.token}`);
+      .set('Authorization', `Bearer ${token}`);
 
     expect(firstStatus).toBe(404);
     expect(secondStatus).toBe(400);
@@ -183,4 +163,6 @@ describe('Plan', () => {
 
     expect(status).toBe(200);
   });
+
+  it.todo('should list plans filtered by query params')
 });

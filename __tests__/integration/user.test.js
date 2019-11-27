@@ -6,9 +6,6 @@ import factory from '../factory';
 import truncate from '../util/truncate';
 
 describe('User', () => {
-  afterAll(async () => {
-    await truncate();
-  });
   beforeEach(async () => {
     await truncate();
   });

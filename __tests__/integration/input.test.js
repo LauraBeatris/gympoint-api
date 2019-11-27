@@ -12,13 +12,7 @@ describe('Input', () => {
     token = await session();
   });
 
-  afterAll(async () => {
-    await truncate();
-  });
-
   it('should validate input data - user and session', async () => {
-    // Generating the user data
-
     // Creating the user passing invalid data
     const { status: userStatus } = await request(app)
       .post('/users')
