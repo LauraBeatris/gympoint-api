@@ -45,7 +45,6 @@ class UserController {
       name: Yup.string(),
       email: Yup.string().email(),
       oldPassword: Yup.string().min(6),
-
       password: Yup.string()
         .min(6)
         .when('oldPassword', (oldPassword, field) =>
@@ -58,16 +57,18 @@ class UserController {
         ),
     });
 
+
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
-
     // Finding the user register
     const user = await User.findByPk(req.userId);
+    if (!user) return res.status(404).json({err: 'User not found'})
 
-    const { oldPassword, email } = req.body;
+    const { oldPassword } = req.body;
 
-    if (email !== user.email) {
+    if ((req.body.email !== undefined) && (req.body.email !== user.email)) {
+      const { email } = req.body
       // Verifying if there isn't a user already using this same email.
       const userExists = await User.findOne({
         where: { email },
@@ -80,15 +81,16 @@ class UserController {
       }
     }
 
+
     // oldPassword verification
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: "Password doesn't match" });
-    }
+    } 
 
-    const { id, name, password } = await user.update(req.body);
+    const updatedUser = await user.update(req.body);
     await user.save();
 
-    return res.json({ id, name, email, password });
+    return res.json(updatedUser);
   }
 
   // Showing the user data -> After authentication
@@ -97,9 +99,9 @@ class UserController {
     const user = await User.findByPk(userId);
     if (!user) return res.status(404).json({ err: 'User not found' });
 
-    const { name, email } = user;
+    const { id, name, email } = user;
 
-    return res.json({ name, email });
+    return res.json({ id, name, email });
   }
 }
 
