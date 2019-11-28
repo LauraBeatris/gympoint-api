@@ -18,7 +18,7 @@ describe('Student', () => {
     await truncate('Student')
     studentData = await factory.attrs('Student');
   });
-
+  
   it('should succesfully create a student', async () => {
     // Creating the student passing the auth header
     const { body: student } = await request(app)

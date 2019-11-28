@@ -7,11 +7,9 @@ import truncate from '../util/truncate';
 
 describe('Session', () => {
   let user = null
-  beforeEach(async () => {
-    await truncate();
-  });
 
   beforeAll(async () => {
+    await truncate()
     user = await factory.attrs('User', {
       name: faker.name.findName(),
       email: faker.internet.email(),
@@ -19,32 +17,31 @@ describe('Session', () => {
     });
   })
 
+  afterAll(async () => {
+    await truncate()
+  })
+
   test('should create an session successfully', async () => {
     // Creating the user
     await request(app)
       .post('/users')
-      .send(user)
-      .expect(200);
-
-    const { email, password } = user;
+      .send({name: 'Laura Beatris', password: '123456', email: 'laura@test.com'})
+      .expect(200)
 
     // Creating an session
     const { body } = await request(app)
       .post('/sessions')
-      .expect(200)
-      .send({ email, password });
+      .send({ email: 'laura@test.com', password: '123456' });
 
     expect(body).toHaveProperty('token');
   });
 
   test("shouldn't create an session with an user that not exists", async () => {
     // Generating the user data but not creating
-    const { email, password } = user;
-
     // Creating an session
     const { status } = await request(app)
       .post('/sessions')
-      .send({ email, password });
+      .send({ email: faker.internet.email(), password: faker.internet.password() });
 
     expect(status).toBe(401);
   });

@@ -13,6 +13,10 @@ describe('Plan', () => {
     token = await session();
   });
 
+  afterAll(async () => {
+    await truncate('Plan')
+  })
+
   // Genereting plan data
   beforeEach(async () => {
      plan = { 
