@@ -64,6 +64,15 @@ describe('Registration', () => {
     expect(status).toBe(404);
   });
 
+  it("shouldn't create two registration for the same student", async () => {
+    const { status } = await request(app)
+      .post('/registrations')
+      .send({ start_date, plan_id, student_id })
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(401);
+  });
+
   it.skip('should successfully update a registration', async () => {});
 
   it.skip("shouldn't update/delete a registration with an invalid id", async () => {});
