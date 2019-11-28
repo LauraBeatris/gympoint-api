@@ -2,21 +2,24 @@ import request from 'supertest';
 
 import app from '../../src/app';
 import factory from '../factory';
+import faker from 'faker'
 import truncate from '../util/truncate';
 
 describe('Session', () => {
-  beforeAll(async () => {
+  let user = null
+  beforeEach(async () => {
     await truncate();
   });
 
-  test('should create an session successfully', async () => {
-    // Generating the user data
-    const user = await factory.attrs('User', {
-      name: 'laura',
-      email: 'laura@gmail.com',
-      password: '123456',
+  beforeAll(async () => {
+    user = await factory.attrs('User', {
+      name: faker.name.findName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
     });
+  })
 
+  test('should create an session successfully', async () => {
     // Creating the user
     await request(app)
       .post('/users')
@@ -36,7 +39,7 @@ describe('Session', () => {
 
   test("shouldn't create an session with an user that not exists", async () => {
     // Generating the user data but not creating
-    const { email, password } = await factory.attrs('User');
+    const { email, password } = user;
 
     // Creating an session
     const { status } = await request(app)

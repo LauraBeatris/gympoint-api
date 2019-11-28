@@ -94,9 +94,7 @@ class UserController {
   // Showing the user data -> After authentication
   async show(req, res) {
     const { userId } = req;
-    console.log('user id ', userId);
     const user = await User.findByPk(userId);
-    console.log('user', user);
     if (!user) return res.status(404).json({ err: 'User not found' });
 
     const { name, email } = user;

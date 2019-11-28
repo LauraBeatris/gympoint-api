@@ -68,4 +68,16 @@ describe('User', () => {
     // Expecting that the current hash not changed
     expect(current_hash).not.toBe(updated_hash);
   });
+
+  it.todo('should update the user successfully')
+
+  it.todo("shouldn't update the user password if not passed the old one")
+
+  it.todo("shouldn't update the user with an email that already exists")
+
+  it.todo("shouldn't update the user if the oldPassword doesn't match")
+
+  it.todo("should sucessfully show the user data")
+
+  it.todo("should't show the user data if the id passed is invalid")
 });

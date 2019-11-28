@@ -156,7 +156,7 @@ describe('Plan', () => {
   });
 
   it('should list plans succesfully', async () => {
-    // Updating the plan with an invalid plan id
+    // Listing plans 
     const { status } = await request(app)
       .get('/plans')
       .set('Authorization', `Bearer ${token}`);
@@ -164,5 +164,24 @@ describe('Plan', () => {
     expect(status).toBe(200);
   });
 
-  it.todo('should list plans filtered by query params')
+  it('should list plans filtered by query params', async () => {
+     await request(app)
+    .get('/plans')
+    .query({page: 1, title: 'Random'})
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
+
+    await request(app)
+    .get('/plans')
+    .query({page: 1, duration:6})
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
+
+    await request(app)
+    .get('/plans')
+    .query({page: 1, price:0})
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
+
+  })
 });
