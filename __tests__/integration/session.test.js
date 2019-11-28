@@ -1,32 +1,28 @@
 import request from 'supertest';
 
+import faker from 'faker';
 import app from '../../src/app';
 import factory from '../factory';
-import faker from 'faker'
 import truncate from '../util/truncate';
 
 describe('Session', () => {
-  let user = null
-
   beforeAll(async () => {
-    await truncate()
-    user = await factory.attrs('User', {
-      name: faker.name.findName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    });
-  })
-
+    truncate();
+  });
   afterAll(async () => {
-    await truncate()
-  })
+    await truncate();
+  });
 
   test('should create an session successfully', async () => {
     // Creating the user
     await request(app)
       .post('/users')
-      .send({name: 'Laura Beatris', password: '123456', email: 'laura@test.com'})
-      .expect(200)
+      .send({
+        name: 'Laura Beatris',
+        password: '123456',
+        email: 'laura@test.com',
+      })
+      .expect(200);
 
     // Creating an session
     const { body } = await request(app)
@@ -41,7 +37,10 @@ describe('Session', () => {
     // Creating an session
     const { status } = await request(app)
       .post('/sessions')
-      .send({ email: faker.internet.email(), password: faker.internet.password() });
+      .send({
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+      });
 
     expect(status).toBe(401);
   });

@@ -3,27 +3,28 @@ import faker from 'faker';
 import app from '../../src/app';
 import factory from '../factory';
 import session from '../util/session';
+import truncate from '../util/truncate';
 
 describe('Plan', () => {
   let token = null;
   let plan = null;
 
-  // Creating a new session 
+  // Creating a new session
   beforeAll(async () => {
     token = await session();
   });
 
   afterAll(async () => {
-    await truncate('Plan')
-  })
+    await truncate('Plan');
+  });
 
   // Genereting plan data
   beforeEach(async () => {
-     plan = { 
-       title: faker.name.title(),
-       duration: Math.floor(Math.random() * 11),
-       price: faker.commerce.price()
-     }
+    plan = {
+      title: faker.name.title(),
+      duration: Math.floor(Math.random() * 11),
+      price: faker.commerce.price(),
+    };
   });
 
   it('should create a plan succesfully', async () => {
@@ -101,14 +102,14 @@ describe('Plan', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    const { id } = createdPlan 
-    const newTitle = faker.name.title()
+    const { id } = createdPlan;
+    const newTitle = faker.name.title();
 
     // Updating the plan passing the auth header
     const { body: planUpdated } = await request(app)
       .put(`/plans/${id}`)
-      .send({ ...plan, title: newTitle})
-      .set('Authorization', `Bearer ${token}`)
+      .send({ ...plan, title: newTitle })
+      .set('Authorization', `Bearer ${token}`);
 
     expect(planUpdated.title).toBe(newTitle);
   });
@@ -160,7 +161,7 @@ describe('Plan', () => {
   });
 
   it('should list plans succesfully', async () => {
-    // Listing plans 
+    // Listing plans
     const { status } = await request(app)
       .get('/plans')
       .set('Authorization', `Bearer ${token}`);
@@ -169,23 +170,22 @@ describe('Plan', () => {
   });
 
   it('should list plans filtered by query params', async () => {
-     await request(app)
-    .get('/plans')
-    .query({page: 1, title: 'Random'})
-    .set('Authorization', `Bearer ${token}`)
-    .expect(200)
+    await request(app)
+      .get('/plans')
+      .query({ page: 1, title: 'Random' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
 
     await request(app)
-    .get('/plans')
-    .query({page: 1, duration:6})
-    .set('Authorization', `Bearer ${token}`)
-    .expect(200)
+      .get('/plans')
+      .query({ page: 1, duration: 6 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
 
     await request(app)
-    .get('/plans')
-    .query({page: 1, price:0})
-    .set('Authorization', `Bearer ${token}`)
-    .expect(200)
-
-  })
+      .get('/plans')
+      .query({ page: 1, price: 0 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+  });
 });

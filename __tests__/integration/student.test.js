@@ -9,16 +9,16 @@ describe('Student', () => {
   let token = null;
   let studentData = null;
 
-  //Creating a new session 
+  // Creating a new session
   beforeAll(async () => {
     token = await session();
   });
 
   beforeEach(async () => {
-    await truncate('Student')
+    await truncate('Student');
     studentData = await factory.attrs('Student');
   });
-  
+
   it('should succesfully create a student', async () => {
     // Creating the student passing the auth header
     const { body: student } = await request(app)

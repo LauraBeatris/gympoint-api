@@ -4,24 +4,16 @@ import bcrypt from 'bcryptjs';
 import app from '../../src/app';
 import factory from '../factory';
 import generateToken from '../util/generateToken';
-import truncate from '../util/truncate'
+import truncate from '../util/truncate';
 
 describe('User', () => {
-  let user = null; 
-
   beforeAll(async () => {
-    await truncate()
-  })
-
-  afterAll(async () => {
-    await truncate()
-  })
-
-  beforeEach(async () => {
-    user = await factory.attrs('User')
+    await truncate();
   });
 
-  
+  afterAll(async () => {
+    await truncate();
+  });
 
   it('should create the user successfully', async () => {
     // Generating the user data
@@ -39,13 +31,22 @@ describe('User', () => {
     // Posting the data of first user
     await request(app)
       .post('/users')
-      .send({ name: 'Random', password: '1234566', email: 'laura@gmail.com'});
+      .send({
+        name: 'Laura',
+        email: 'laurigdm@gmail.com',
+        password: '123456',
+      })
+      .expect(200);
 
     // Posting the data of the second user and getting the response
     await request(app)
-    .post('/users')
-    .send({ name: 'Random', password: '1234566', email: 'laura@gmail.com'})
-    .expect(400)
+      .post('/users')
+      .send({
+        name: 'Laura',
+        email: 'laurigdm@gmail.com',
+        password: '123456',
+      })
+      .expect(400);
   });
 
   it('should encrypt password after create the user', async () => {
@@ -82,23 +83,23 @@ describe('User', () => {
   it('should update the user successfully', async () => {
     const userData = await factory.attrs('User', {
       password: '123456',
-      email: 'laura@hotmail.com'
+      email: 'laura@hotmail.com',
     });
 
     const { body: user } = await request(app)
       .post('/users')
       .send(userData);
 
-    const { id } = user 
-    const token = await generateToken(id)
+    const { id } = user;
+    const token = await generateToken(id);
 
     const { body } = await request(app)
-    .put('/users')
-    .send({name: 'Laura'})
-    .set('Authorization', `Bearer ${token}`);
+      .put('/users')
+      .send({ name: 'Laura' })
+      .set('Authorization', `Bearer ${token}`);
 
-    expect(body.name).toBe('Laura')
-  })
+    expect(body.name).toBe('Laura');
+  });
 
   it("shouldn't update the user password if not passed the old one", async () => {
     const userData = await factory.attrs('User', {
@@ -109,20 +110,21 @@ describe('User', () => {
       .post('/users')
       .send(userData);
 
-    const { id } = user 
-    const token = await generateToken(id)
+    const { id } = user;
+    const token = await generateToken(id);
 
     const { status } = await request(app)
       .put('/users')
-      .send({password: '1234567'})
+      .send({ password: '1234567' })
       .set('Authorization', `Bearer ${token}`);
 
     expect(status).toBe(400);
-  })
+  });
 
   it("shouldn't update the user password if the old password not match the current one", async () => {
     const userData = await factory.attrs('User', {
-      password: '123456', email: 'matchpassword@gmail.com'
+      password: '123456',
+      email: 'matchpassword@gmail.com',
     });
 
     const { body: user } = await request(app)
@@ -130,16 +132,20 @@ describe('User', () => {
       .send(userData)
       .expect(200);
 
-    const { id } = user 
-    const token = await generateToken(id)
+    const { id } = user;
+    const token = await generateToken(id);
 
     const { status } = await request(app)
       .put('/users')
-      .send({password: '1234567', oldPassword: '123456634', confirmPassword: '1234567'})
+      .send({
+        password: '1234567',
+        oldPassword: '123456634',
+        confirmPassword: '1234567',
+      })
       .set('Authorization', `Bearer ${token}`);
 
     expect(status).toBe(401);
-  })
+  });
 
   it("shouldn't update the user with an email that already exists", async () => {
     // Generating the first user data
@@ -149,60 +155,69 @@ describe('User', () => {
 
     // Generating the second user data
     const secondUser = await factory.attrs('User', {
-        email: 'test@gmail.com',
+      email: 'test@gmail.com',
     });
 
     // Creating the first user
     await request(app)
       .post('/users')
       .send(firstUser)
-      .expect(200)
+      .expect(200);
 
     // Creating the second user
     const { body: user } = await request(app)
-    .post('/users')
-    .send(secondUser)
-    .expect(200);
+      .post('/users')
+      .send(secondUser)
+      .expect(200);
 
     // Getting the authorization token
-    const { id } = user 
-    const token = await generateToken(id)
+    const { id } = user;
+    const token = await generateToken(id);
 
-    const { status } = await request(app).put('/users').send({email: 'same@gmail.com'}).set('Authorization', `Bearer ${token}`)
-  
+    const { status } = await request(app)
+      .put('/users')
+      .send({ email: 'same@gmail.com' })
+      .set('Authorization', `Bearer ${token}`);
+
     expect(status).toBe(400);
-  })
+  });
 
   it('should not update if user not found', async () => {
     // Generating a random token
-    const token = await generateToken(1000)
+    const token = await generateToken(1000);
 
     const { status } = await request(app)
-    .put('/users')
-    .send({email: 'test@gmail.com'})
-    .set('Authorization', `Bearer ${token}`);
+      .put('/users')
+      .send({ email: 'test@gmail.com' })
+      .set('Authorization', `Bearer ${token}`);
 
     expect(status).toBe(404);
-  })
+  });
 
-  it("should sucessfully show the user data", async () => {
-    const userData =  await factory.attrs('User', { email: 'successfully@gmail.com'});
+  it('should sucessfully show the user data', async () => {
+    const userData = await factory.attrs('User', {
+      email: 'successfully@gmail.com',
+    });
 
     const { body: user } = await request(app)
-    .post('/users')
-    .send(userData);
+      .post('/users')
+      .send(userData);
 
-    const { id } = user 
-    const token = await generateToken(id)
+    const { id } = user;
+    const token = await generateToken(id);
 
-    const { body } = await request(app).get('/user').set('Authorization', `Bearer ${token}`)
-    expect(body).toHaveProperty('name')
-  })
+    const { body } = await request(app)
+      .get('/user')
+      .set('Authorization', `Bearer ${token}`);
+    expect(body).toHaveProperty('name');
+  });
 
   it("should't show the user data if the id passed is invalid", async () => {
-    const token = await generateToken(1000)
+    const token = await generateToken(1000);
 
-    const { status } = await request(app).get('/user').set('Authorization', `Bearer ${token}`)
-    expect(status).toBe(404)
-  })
+    const { status } = await request(app)
+      .get('/user')
+      .set('Authorization', `Bearer ${token}`);
+    expect(status).toBe(404);
+  });
 });
