@@ -83,7 +83,7 @@ describe('Registration', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(status).toBe(401);
+    expect(body.start_date).toBe('2019-11-10T19:07:16.000Z');
   });
 
   it.skip("shouldn't update/delete a registration with an invalid id", async () => {});
