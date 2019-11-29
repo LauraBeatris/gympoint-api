@@ -99,4 +99,11 @@ describe('Registration', () => {
     expect(updateStatus).toBe(404);
     expect(deleteStatus).toBe(404);
   });
+
+  it('should successfully delete a registration', async () => {
+    await request(app)
+      .delete(`/registrations/${registration_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+  });
 });
