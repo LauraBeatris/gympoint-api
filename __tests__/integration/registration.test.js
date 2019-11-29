@@ -86,9 +86,17 @@ describe('Registration', () => {
     expect(body.start_date).toBe('2019-11-10T19:07:16.000Z');
   });
 
-  it.skip("shouldn't update/delete a registration with an invalid id", async () => {});
+  it("shouldn't update/delete a registration with an invalid id", async () => {
+    const { status: updateStatus } = await request(app)
+      .put('/registrations/1000')
+      .send({ start_date: '2019-11-10T22:07:16+03:00' })
+      .set('Authorization', `Bearer ${token}`);
 
-  it.skip('should successfully delete a registration', async () => {});
+    const { status: deleteStatus } = await request(app)
+      .delete('/registrations/1000')
+      .set('Authorization', `Bearer ${token}`);
 
-  it.skip('should successfully list registrations', async () => {});
+    expect(updateStatus).toBe(404);
+    expect(deleteStatus).toBe(404);
+  });
 });
