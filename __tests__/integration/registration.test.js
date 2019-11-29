@@ -2,7 +2,6 @@ import request from 'supertest';
 import faker from 'faker';
 import { parseISO, formatISO } from 'date-fns';
 import app from '../../src/app';
-import factory from '../factory';
 import session from '../util/session';
 import truncate from '../util/truncate';
 
@@ -10,6 +9,7 @@ describe('Registration', () => {
   let token = null;
   let plan_id = null;
   let student_id = null;
+  let registration_id = null;
   const start_date = parseISO(formatISO(new Date()));
 
   // Creating a new session, student, plan
@@ -52,6 +52,9 @@ describe('Registration', () => {
       .send({ start_date, plan_id, student_id })
       .set('Authorization', `Bearer ${token}`);
 
+    const { id } = registrationData;
+    registration_id = id;
+
     expect(registrationData).toHaveProperty('start_date');
   });
 
@@ -73,7 +76,15 @@ describe('Registration', () => {
     expect(status).toBe(401);
   });
 
-  it.skip('should successfully update a registration', async () => {});
+  it('should successfully update a registration', async () => {
+    const { body } = await request(app)
+      .put(`/registrations/${registration_id}`)
+      .send({ start_date: '2019-11-10T22:07:16+03:00' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    expect(status).toBe(401);
+  });
 
   it.skip("shouldn't update/delete a registration with an invalid id", async () => {});
 
