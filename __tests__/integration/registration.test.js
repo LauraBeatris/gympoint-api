@@ -106,4 +106,11 @@ describe('Registration', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
+
+  it('should successfully list registrations', async () => {
+    await request(app)
+      .get('/registrations')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+  });
 });
