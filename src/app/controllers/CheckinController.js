@@ -39,7 +39,7 @@ class CheckinController {
       existingCheckins.forEach(async checkin => {
         if (differenceInCalendarDays(Date.now(), checkin.createdAt) > 7) {
           // Deleting old checkins
-          await Checkin.destroy({ where: { student_id } });
+          return Checkin.destroy({ where: { student_id } });
         }
       });
 
