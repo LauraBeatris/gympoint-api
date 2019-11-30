@@ -33,8 +33,9 @@ it('Question', () => {
       .send({
         question: 'How can i healtly gain body mass?',
       })
-      .set('Authorization', `Bearer ${token}`);
-  }).expect(200);
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+  });
 
   it("shouldn't create/list a question with a invalid student id", async () => {
     await request(app)

@@ -1,6 +1,5 @@
 import request from 'supertest';
 import faker from 'faker';
-import { parseISO, formatISO } from 'date-fns';
 import app from '../../src/app';
 import session from '../util/generateToken';
 import truncate from '../util/truncate';
@@ -25,6 +24,10 @@ describe('Checkin', () => {
       })
       .set('Authorization', `Bearer ${token}`);
     student_id = studentData.id;
+  });
+
+  afterAll(async () => {
+    await truncate();
   });
 
   it('should create checkin succesfully', async () => {
