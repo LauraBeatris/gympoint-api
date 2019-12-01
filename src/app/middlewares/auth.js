@@ -12,7 +12,6 @@ export default async (req, res, next) => {
   try {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const { id } = decoded;
-
     // Passing the id to next route
     req.userId = id;
     return next();

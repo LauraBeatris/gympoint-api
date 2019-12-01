@@ -2,19 +2,18 @@ import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import faker from 'faker';
 import app from '../../src/app';
-import truncate from '../util/truncate'
+import truncate from './truncate';
 
 // Generating the user data
- const user = {
-   name: faker.name.firstName(),
-   email: faker.internet.email(),
-   password: faker.internet.password(),
- };
-
+const user = {
+  name: faker.name.firstName(),
+  email: faker.internet.email(),
+  password: faker.internet.password(),
+};
 
 export default async () => {
-  // Truncating db to not create duplitated users 
-  await truncate()
+  // Truncating db to not create duplitated users
+  await truncate();
 
   // Creating the user
   const { body: userBody } = await request(app)
