@@ -1,28 +1,7 @@
-import Joi from 'joi';
-import * as Yup from 'yup';
 import User from '../models/User';
-
-// TO DO -> Put the validate schema in the validators folder
 
 class UserController {
   async store(req, res) {
-    const schema = Joi.object().keys({
-      name: Joi.string().required(),
-      email: Joi.string()
-        .email()
-        .required(),
-      password: Joi.string()
-        .required()
-        .min(6),
-    });
-
-    // Validating the input data
-    Joi.validate(req.body, schema, err => {
-      if (err) {
-        return res.status(400).json({ err: err.details });
-      }
-    });
-
     // Verifying if there's another user register with the same email
     const userExists = await User.findOne({ where: { email: req.body.email } });
 
@@ -41,24 +20,6 @@ class UserController {
   }
 
   async update(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string(),
-      email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
-      password: Yup.string()
-        .min(6)
-        .when('oldPassword', (oldPassword, field) =>
-          oldPassword ? field.required() : field
-        ),
-      confirmPassword: Yup.string()
-        .min(6)
-        .when('password', (password, field) =>
-          password ? field.required() : field
-        ),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
     // Finding the user register
     const user = await User.findByPk(req.userId);
     if (!user) return res.status(404).json({ err: 'User not found' });

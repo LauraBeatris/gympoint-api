@@ -1,83 +1,27 @@
-import Joi from 'joi';
-import { parseISO, addMonths, format } from 'date-fns';
 import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plan from '../models/Plan';
 
-import Queue from '../../lib/Queue';
-import RegistrationMail from '../jobs/RegistrationMail';
-import validationSchema from '../../validationSchemas/registrations';
+import CreateRegistrationService from '../services/CreateRegistrationService';
+import UpdateRegistrationService from '../services/UpdateRegistrationService';
 
 class RegistrationController {
   async store(req, res) {
-    Joi.validate(req.body, validationSchema.store, err => {
-      if (err) return res.status(400).json({ err: err.details });
-
-      return true;
-    });
-
     // Registration input data
     const { student_id, plan_id } = req.body;
-    let { start_date } = req.body;
-
-    // Finding for the choosed plan
-    const plan = await Plan.findByPk(plan_id);
-
-    if (!plan) {
-      return res.status(404).json({ err: 'Plan not found' });
-    }
-
-    const { price: planPrice, duration } = plan;
-
-    // Generating the end date and the price based on the choosed plan
-    start_date = parseISO(start_date);
-    const end_date = addMonths(start_date, duration);
-    const price = planPrice * duration;
-
-    // Verifying if the user already have a registration
-    const existingRegistration = await Registration.findOne({
-      where: { student_id },
-    });
-
-    if (existingRegistration) {
-      return res.status(401).json({
-        err:
-          'This user already have a registration. Update the current one or delete',
-      });
-    }
-
-    const student = await Student.findByPk(student_id);
-
-    if (!student) {
-      return res.status(404).json({ err: 'Student not found' });
-    }
-
-    const { id } = await Registration.create({
-      start_date,
-      end_date,
-      price,
+    const { start_date } = req.body;
+    console.log(plan_id);
+    // Running the service responsable for the logic of creating a registration
+    const registration = await CreateRegistrationService.run({
       plan_id,
       student_id,
+      start_date,
     });
 
-    await Queue.add(RegistrationMail.key, {
-      start_date: format(start_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
-      end_date: format(end_date, "'At day' dd 'of' MMMM',' H:mm 'hours'"),
-      price,
-      plan,
-      student,
-    });
-
-    return res.json({ id, start_date, end_date, price, plan, student_id });
+    return res.json(registration);
   }
 
   async update(req, res) {
-    Joi.validate(req.body, validationSchema.update, err => {
-      if (err) return res.status(400).json({ err: err.details });
-
-      return true;
-    });
-
     const { registration_id } = req.params;
 
     // Validating param
@@ -85,39 +29,13 @@ class RegistrationController {
       return res.status(400).json({ err: 'Registration id not provided' });
     }
 
-    // Finding the registration
-    const registration = await Registration.findByPk(registration_id);
-
-    if (!registration) {
-      return res.status(404).json({ err: 'Registration not found' });
-    }
-
-    // If the plan was changed, it needs to change the price and date informations
-    if (!!req.body.plan_id && req.body.plan_id !== registration.plan_id) {
-      const { duration, price } = await Plan.findByPk(req.body.plan_id);
-      req.body.price = duration * price;
-      req.body.end_date = addMonths(registration.start_date, duration);
-    }
-
-    // Updating and saving
-    const {
-      id,
-      plan_id,
-      start_date,
-      end_date,
-      price,
-      student_id,
-    } = await registration.update(req.body);
-    await registration.save();
-
-    return res.json({
-      id,
-      start_date,
-      end_date,
-      price,
-      plan_id,
-      student_id,
+    const registration = await UpdateRegistrationService.run({
+      registration_id,
+      plan_id: req.body.plan_id,
+      data: req.body,
     });
+
+    return res.json(registration);
   }
 
   async delete(req, res) {

@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import { format } from 'date-fns';
 import { Op } from 'sequelize';
 
@@ -7,16 +6,8 @@ import Student from '../models/Student';
 import Queue from '../../lib/Queue';
 import HelpOrderEmail from '../jobs/HelpOrderMail';
 
-import validationSchema from '../../validationSchemas/helpOrder';
-
 class HelpOrderController {
   async store(req, res) {
-    Joi.validate(req.body, validationSchema.storeAnswer, err => {
-      if (err) return res.status(400).json({ err: err.details });
-
-      return true;
-    });
-
     const { question_id } = req.params;
 
     // Validating question id
