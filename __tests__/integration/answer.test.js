@@ -22,7 +22,6 @@ describe('Answer', () => {
       })
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-    console.log(studentBody);
     student_id = studentBody.id;
 
     const { body: questionBody } = await request(app)

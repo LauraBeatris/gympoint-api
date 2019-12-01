@@ -41,10 +41,12 @@ describe('Registration', () => {
         weight: 80,
       })
       .set('Authorization', `Bearer ${token}`);
+
     await request(app)
       .post('/registrations')
       .send({ start_date, plan_id, student_id: studentData.id })
       .set('Authorization', `Bearer ${token}`);
+
     const { status } = await request(app)
       .post('/registrations')
       .send({ start_date, plan_id, student_id: studentData.id })
@@ -101,8 +103,6 @@ describe('Registration', () => {
       .put(`/registrations/${registrationData.id}`)
       .send({ start_date: '2019-11-10T22:07:16+03:00' })
       .set('Authorization', `Bearer ${token}`);
-
-    registration_id = registrationData.id;
 
     expect(body.start_date).toBe('2019-11-10T19:07:16.000Z');
   });

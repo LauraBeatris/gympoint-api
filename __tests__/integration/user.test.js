@@ -63,18 +63,29 @@ describe('User', () => {
 
   it("shouldn't re-encrypt password after updating the user without passing the password data", async () => {
     // Creating the user passing the current password
-    const user = await factory.create('User', {
+    const userData = await factory.attrs('User', {
       password: '123456',
+      email: 'shouldntencrypt@gmail.com',
     });
+
+    const { body: user } = await request(app)
+      .post('/users')
+      .send(userData)
+      .expect(200);
+
+    const { id } = user;
+    const token = await generateToken(id);
 
     // Destructuring the user data to get the current password hash
     const { password_hash: current_hash } = user;
 
     // Updating the user with other informations, without password
-    const { password_hash: updated_hash } = await user.update({
-      name: 'Luiz',
-      email: 'luiz@gmail.com',
-    });
+    const { body: updatedUser } = await request(app)
+      .put('/users')
+      .send({ name: 'Laura' })
+      .set('Authorization', `Bearer ${token}`);
+
+    const { password_hash: updated_hash } = updatedUser;
 
     // Expecting that the current hash not changed
     expect(current_hash).not.toBe(updated_hash);
