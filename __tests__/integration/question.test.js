@@ -4,7 +4,7 @@ import app from '../../src/app';
 import session from '../util/generateToken';
 import truncate from '../util/truncate';
 
-it('Question', () => {
+describe('Question', () => {
   let student_id = null;
   let token = null;
 
@@ -19,7 +19,9 @@ it('Question', () => {
         height: 1.7,
         weight: 80,
       })
+      .set('Authorization', `Bearer ${token}`)
       .expect(200);
+
     student_id = body.id;
   });
 
@@ -49,7 +51,7 @@ it('Question', () => {
     await request(app)
       .get('/students/10000/help-orders')
       .set('Authorization', `Bearer ${token}`)
-      .expect(200);
+      .expect(404);
   });
 
   it('should succesfully list the question of a student', async () => {

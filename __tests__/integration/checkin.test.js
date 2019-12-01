@@ -49,7 +49,7 @@ describe('Checkin', () => {
   });
 
   it("shouldn't create more than 5 checkins per student", async () => {
-    for (i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       const { status } = await request(app).post(
         `students/${student_id}/checkins`
       );

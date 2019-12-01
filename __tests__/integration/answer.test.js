@@ -20,8 +20,9 @@ describe('Answer', () => {
         height: 1.7,
         weight: 80,
       })
+      .set('Authorization', `Bearer ${token}`)
       .expect(200);
-
+    console.log(studentBody);
     student_id = studentBody.id;
 
     const { body: questionBody } = await request(app)
@@ -31,8 +32,7 @@ describe('Answer', () => {
       })
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-
-    question_id = questionBody.id;
+    question_id = questionBody.helpOrder.id;
   });
 
   afterAll(async () => {
