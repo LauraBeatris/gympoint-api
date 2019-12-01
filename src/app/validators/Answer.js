@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import validate from '../../util/validate';
 
 class AnswerValidator {
   async store(req, res, next) {
@@ -7,15 +8,7 @@ class AnswerValidator {
     });
 
     // Validating the input data
-    await Joi.validate(req.body, schema, err => {
-      if (err) {
-        return res
-          .status(400)
-          .json({ error: 'Validation fails', details: err.details });
-      }
-
-      return next();
-    });
+    await validate(res, next, req.body, schema);
   }
 }
 

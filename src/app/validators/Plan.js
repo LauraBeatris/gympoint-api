@@ -1,15 +1,5 @@
 import Joi from 'joi';
-
-const validate = async (res, data, schema) => {
-  await Joi.validate(data, schema, err => {
-    if (err) {
-      return res
-        .status(400)
-        .json({ error: 'Validation fails', details: err.details });
-    }
-    return true;
-  });
-};
+import validate from '../../util/validate';
 
 class PlanValidator {
   async store(req, res, next) {
@@ -22,7 +12,7 @@ class PlanValidator {
     });
 
     // Validating the input data
-    await validate(res, req.body, schema);
+    await validate(res, next, req.body, schema);
   }
 
   async update(req, res, next) {
@@ -33,7 +23,7 @@ class PlanValidator {
     });
 
     // Validating the input data
-    await validate(res, req.body, schema);
+    await validate(res, next, req.body, schema);
   }
 }
 
