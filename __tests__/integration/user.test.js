@@ -49,18 +49,6 @@ describe('User', () => {
       .expect(400);
   });
 
-  it('should encrypt password after create the user', async () => {
-    // Creating the user with factory but overriding the generated password
-    const user = await factory.create('User', {
-      password: '123456',
-    });
-
-    // Comparing the passed password with the hash - It will return a boolean value
-    const compareHash = await bcrypt.compare(user.password, user.password_hash);
-
-    expect(compareHash).toBeTruthy();
-  });
-
   it("shouldn't re-encrypt password after updating the user without passing the password data", async () => {
     // Creating the user passing the current password
     const userData = await factory.attrs('User', {
@@ -74,7 +62,7 @@ describe('User', () => {
       .expect(200);
 
     const { id } = user;
-    const token = await generateToken(id);
+    const token = generateToken(id);
 
     // Destructuring the user data to get the current password hash
     const { password_hash: current_hash } = user;
@@ -102,7 +90,7 @@ describe('User', () => {
       .send(userData);
 
     const { id } = user;
-    const token = await generateToken(id);
+    const token = generateToken(id);
 
     const { body } = await request(app)
       .put('/users')
@@ -122,7 +110,7 @@ describe('User', () => {
       .send(userData);
 
     const { id } = user;
-    const token = await generateToken(id);
+    const token = generateToken(id);
 
     const { status } = await request(app)
       .put('/users')
@@ -144,7 +132,7 @@ describe('User', () => {
       .expect(200);
 
     const { id } = user;
-    const token = await generateToken(id);
+    const token = generateToken(id);
 
     const { status } = await request(app)
       .put('/users')
@@ -183,7 +171,7 @@ describe('User', () => {
 
     // Getting the authorization token
     const { id } = user;
-    const token = await generateToken(id);
+    const token = generateToken(id);
 
     const { status } = await request(app)
       .put('/users')
@@ -195,7 +183,7 @@ describe('User', () => {
 
   it('should not update if user not found', async () => {
     // Generating a random token
-    const token = await generateToken(1000);
+    const token = generateToken(1000);
 
     const { status } = await request(app)
       .put('/users')
@@ -215,7 +203,7 @@ describe('User', () => {
       .send(userData);
 
     const { id } = user;
-    const token = await generateToken(id);
+    const token = generateToken(id);
 
     const { body } = await request(app)
       .get('/user')
@@ -224,7 +212,7 @@ describe('User', () => {
   });
 
   it("should't show the user data if the id passed is invalid", async () => {
-    const token = await generateToken(1000);
+    const token = generateToken(1000);
 
     const { status } = await request(app)
       .get('/user')

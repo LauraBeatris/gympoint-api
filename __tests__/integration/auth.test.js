@@ -21,8 +21,7 @@ describe('Auth', () => {
     await request(app)
       .get('/plans')
       .set('Authorization', `Bearer ${token}`)
-      .expect(200)
-      
+      .expect(200);
   });
 
   it("if not authenticated, the user id shouldn't access the next middleware", async () => {
@@ -31,8 +30,6 @@ describe('Auth', () => {
     */
     await request(app)
       .get('/plans')
-      .expect(401)
+      .expect(401);
   });
-
-  it.todo('invalid token')
 });
