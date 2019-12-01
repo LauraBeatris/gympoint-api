@@ -7,7 +7,7 @@ const config = {
   username: process.env.POSTGRES_USERNAME,
   password: process.env.POSTGRES_PASSWORD,
   storage: './__tests__/database.sqlite',
-  logging: !process.env.DB_DIALECT,
+  logging: false,
   define: {
     timestamps: true,
     underscored: true,

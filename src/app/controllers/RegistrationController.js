@@ -1,21 +1,13 @@
-import Joi from 'joi';
 import { parseISO, addMonths, format } from 'date-fns';
+
 import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plan from '../models/Plan';
-
 import Queue from '../../lib/Queue';
 import RegistrationMail from '../jobs/RegistrationMail';
-import validationSchema from '../../validationSchemas/registrations';
 
 class RegistrationController {
   async store(req, res) {
-    Joi.validate(req.body, validationSchema.store, err => {
-      if (err) return res.status(400).json({ err: err.details });
-
-      return true;
-    });
-
     // Registration input data
     const { student_id, plan_id } = req.body;
     let { start_date } = req.body;
@@ -72,12 +64,6 @@ class RegistrationController {
   }
 
   async update(req, res) {
-    Joi.validate(req.body, validationSchema.update, err => {
-      if (err) return res.status(400).json({ err: err.details });
-
-      return true;
-    });
-
     const { registration_id } = req.params;
 
     // Validating param

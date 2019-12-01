@@ -1,18 +1,8 @@
-import Joi from 'joi';
-
 import HelpOrder from '../models/HelpOrder';
 import Student from '../models/Student';
 
-import validationSchema from '../../validationSchemas/helpOrder';
-
 class QuestionController {
   async store(req, res) {
-    Joi.validate(req.body, validationSchema.storeQuestion, err => {
-      if (err) return res.status(400).json({ err: err.details });
-
-      return true;
-    });
-
     const { student_id } = req.params;
 
     // Validating student id
