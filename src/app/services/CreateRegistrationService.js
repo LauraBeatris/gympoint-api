@@ -8,7 +8,6 @@ import RegistrationMail from '../jobs/RegistrationMail';
 
 class CreateRegistrationService {
   async run({ plan_id, student_id, start_date }) {
-    console.log(plan_id);
     // Finding for the choosed plan
     const plan = await Plan.findByPk(plan_id);
 
