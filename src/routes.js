@@ -47,7 +47,6 @@ routes.get(
 
 routes.use(AuthMiddleware);
 
-<<<<<<< HEAD
 // Entry Point Message
 routes.get('/', (req, res) =>
   res.send(
@@ -56,9 +55,6 @@ routes.get('/', (req, res) =>
 );
 
 // Showing user data
-=======
-// Showing and updating user data
->>>>>>> 6b0ea6d1f9424e344dce14befb62d1c82685d064
 routes.get('/user', UserController.show);
 routes.put('/users', UserValidator.update, UserController.update);
 
