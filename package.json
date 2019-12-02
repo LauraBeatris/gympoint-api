@@ -8,7 +8,7 @@
     "queue-dev": "NODE_ENV=development nodemon src/queue.js",
     "queue": "NODE_ENV=production node dist/queue.js",
     "start": "NODE_ENV=production node dist/server.js",
-    "build": "sucrase ./src -d ./dist --transforms imports",
+    "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
