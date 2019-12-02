@@ -26,6 +26,13 @@ import StudentValidator from './app/validators/Student';
 
 const routes = new Router();
 
+// Entry Point Message
+routes.get('/', (req, res) =>
+  res.send(
+    'Welcome to Gympoint API. To access the features, create a user and a session for getting the authorization token. Look into the documentation for more details.'
+  )
+);
+
 // Creating users, sessions
 routes.post('/users', UserValidator.store, UserController.store);
 routes.post('/sessions', SessionValidator.store, SessionController.store);
@@ -46,13 +53,6 @@ routes.get(
 );
 
 routes.use(AuthMiddleware);
-
-// Entry Point Message
-routes.get('/', (req, res) =>
-  res.send(
-    'Welcome to Gympoint API. To access the features, create a user and a session for getting the authorization token. Look into the documentation for more details.'
-  )
-);
 
 // Showing user data
 routes.get('/user', UserController.show);
