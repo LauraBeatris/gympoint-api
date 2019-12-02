@@ -9,9 +9,6 @@
     "queue": "NODE_ENV=production node dist/queue.js",
     "start": "NODE_ENV=production node dist/server.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
-    "pretest": "NODE_ENV=test yarn sequelize db:migrate",
-    "test": "NODE_ENV=test jest",
-    "posttest": "NODE_ENV=test yarn sequelize db:migrate:undo:all"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
