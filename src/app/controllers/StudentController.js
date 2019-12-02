@@ -1,27 +1,7 @@
-import Joi from 'joi';
 import Student from '../models/Student';
 
 class StudentControler {
   async store(req, res) {
-    const schema = Joi.object().keys({
-      name: Joi.string().required(),
-      email: Joi.string()
-        .email()
-        .required(),
-      age: Joi.number()
-        .integer()
-        .required(),
-      weight: Joi.number().required(),
-      height: Joi.number().required(),
-    });
-
-    // Validating the input data
-    Joi.validate(req.body, schema, err => {
-      if (err) {
-        return res.status(400).json({ err: err.details });
-      }
-    });
-
     const { email } = req.body;
 
     // Verifying if there's another student register with the same email
@@ -38,25 +18,9 @@ class StudentControler {
   }
 
   async update(req, res) {
-    // For updating a student, it needs to provide his/her id as a route param
-    const schema = Joi.object().keys({
-      name: Joi.string(),
-      email: Joi.string().email(),
-      age: Joi.number().integer(),
-      weight: Joi.number(),
-      height: Joi.number(),
-    });
-
     const { student_id } = req.params;
     if (!student_id || !student_id.match(/^-{0,1}\d+$/))
       return res.status(400).json({ err: 'Student id not provided' });
-
-    // Validating the input data
-    Joi.validate(req.body, schema, err => {
-      if (err) {
-        return res.status(400).json({ err: err.details });
-      }
-    });
 
     const { email } = req.body;
 

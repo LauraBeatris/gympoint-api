@@ -1,21 +1,8 @@
-import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 class SessionController {
   async store(req, res) {
-    const schema = Joi.object().keys({
-      email: Joi.string().required(),
-      password: Joi.string().required(),
-    });
-
-    // Validating the input data
-    Joi.validate(req.body, schema, err => {
-      if (err) {
-        return res.status(400).json({ err: err.details });
-      }
-    });
-
     const { email, password } = req.body;
 
     // Verifying if the user exists
