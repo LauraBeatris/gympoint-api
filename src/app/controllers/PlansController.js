@@ -1,4 +1,5 @@
 import Plan from '../models/Plan';
+import Cache from '../../lib/Cache';
 
 class PlansController {
   async store(req, res) {
@@ -14,6 +15,9 @@ class PlansController {
     }
 
     const { id } = await Plan.create({ title, duration, price });
+
+    // Invalidating cached plans
+    await Cache.invalidate('plans');
 
     return res.json({ id, title, price, duration });
   }
@@ -47,6 +51,8 @@ class PlansController {
     const { id, duration, price } = await plan.update(req.body);
     await plan.save();
 
+    await Cache.invalidate('plans');
+
     return res.json({ id, title, duration, price });
   }
 
@@ -68,6 +74,9 @@ class PlansController {
     // Deleting the plan
     await plan.destroy();
 
+    // Invalidating cached plans
+    await Cache.invalidate('plans');
+
     return res.json({ msg: `${plan.title} was successfully deleted` });
   }
 
@@ -81,12 +90,20 @@ class PlansController {
     if (duration) query.duration = duration;
     if (price) query.price = price;
 
+    const cached = await Cache.get('plans');
+
+    if (cached && Object.values(query).length === 0) {
+      return res.json(cached);
+    }
+
     const plans = await Plan.findAll({
       where: { ...query },
       offset: (page - 1) * 10,
       limit: 10,
       attributes: ['title', 'duration', 'price'],
     });
+
+    await Cache.set('plans', plans);
 
     return res.json(plans);
   }

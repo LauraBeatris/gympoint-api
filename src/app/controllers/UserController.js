@@ -1,4 +1,5 @@
 import User from '../models/User';
+import Cache from '../../lib/Cache';
 
 class UserController {
   async store(req, res) {
@@ -48,16 +49,29 @@ class UserController {
     const updatedUser = await user.update(req.body);
     await user.save();
 
+    // Invalidating cache
+    await Cache.invalidate(`user:${req.userId}`);
+
     return res.json(updatedUser);
   }
 
   // Showing the user data -> After authentication
   async show(req, res) {
+    const cached = await Cache.get(`user:${req.userId}`);
+
+    if (cached) {
+      return res.json(cached);
+    }
+
     const { userId } = req;
+
     const user = await User.findByPk(userId);
     if (!user) return res.status(404).json({ err: 'User not found' });
 
     const { id, name, email } = user;
+
+    // Catching the data for the user profile
+    await Cache.set(`user:${req.userId}`, { id, name, email });
 
     return res.json({ id, name, email });
   }
