@@ -16,8 +16,8 @@ class PlansController {
 
     const { id } = await Plan.create({ title, duration, price });
 
-    // Invalidating cached plans
-    await Cache.invalidate('plans');
+    // Invalidating cached plans with that prefix
+    await Cache.invalidatePrefix(`plans:${req.userId}`);
 
     return res.json({ id, title, price, duration });
   }
@@ -51,7 +51,8 @@ class PlansController {
     const { id, duration, price } = await plan.update(req.body);
     await plan.save();
 
-    await Cache.invalidate('plans');
+    // Invalidating cached plans with that prefix
+    await Cache.invalidatePrefix(`plans:${req.userId}`);
 
     return res.json({ id, title, duration, price });
   }
@@ -74,8 +75,8 @@ class PlansController {
     // Deleting the plan
     await plan.destroy();
 
-    // Invalidating cached plans
-    await Cache.invalidate('plans');
+    // Invalidating cached plans with that prefix
+    await Cache.invalidatePrefix(`plans:${req.userId}`);
 
     return res.json({ msg: `${plan.title} was successfully deleted` });
   }
@@ -90,9 +91,13 @@ class PlansController {
     if (duration) query.duration = duration;
     if (price) query.price = price;
 
-    const cached = await Cache.get('plans');
+    let cacheKey = `plans:${req.userId}:page:${page}`;
+    if (Object.values(query).length > 0) {
+      Object.keys(query).map((q, key) => (cacheKey += `:${q}:${query[q]}`));
+    }
+    const cached = await Cache.get(cacheKey);
 
-    if (cached && Object.values(query).length === 0) {
+    if (cached) {
       return res.json(cached);
     }
 
@@ -102,8 +107,7 @@ class PlansController {
       limit: 10,
       attributes: ['title', 'duration', 'price'],
     });
-
-    await Cache.set('plans', plans);
+    await Cache.set(cacheKey, plans);
 
     return res.json(plans);
   }

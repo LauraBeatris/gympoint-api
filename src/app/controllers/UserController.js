@@ -57,8 +57,10 @@ class UserController {
 
   // Showing the user data -> After authentication
   async show(req, res) {
-    const cached = await Cache.get(`user:${req.userId}`);
+    const cacheKey = `user:${req.userId}`;
+    const cached = await Cache.get(cacheKey);
 
+    // If cached, return it
     if (cached) {
       return res.json(cached);
     }
@@ -71,7 +73,7 @@ class UserController {
     const { id, name, email } = user;
 
     // Catching the data for the user profile
-    await Cache.set(`user:${req.userId}`, { id, name, email });
+    await Cache.set(cacheKey, { id, name, email });
 
     return res.json({ id, name, email });
   }
