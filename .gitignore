@@ -57,3 +57,6 @@ jest.setup.js
 # Ignore Docker Override Configurations
 docker-compose.override.yml
 docker-compose.override.yaml
+
+# Sucrase Build
+dist/
