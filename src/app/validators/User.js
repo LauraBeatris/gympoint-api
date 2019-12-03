@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import * as Yup from 'yup';
-import validate from '../../util/validate';
+import validate from '../util/validate';
 
 class UserValidator {
   async store(req, res, next) {
