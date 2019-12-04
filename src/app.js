@@ -1,11 +1,14 @@
 import './bootstrap';
 
 import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
 import 'express-async-errors';
-import routes from './routes';
 
+import RateLimit from './lib/RateLimit';
+import routes from './routes';
 import './database';
 
 class App {
@@ -22,8 +25,27 @@ class App {
   }
 
   middlewares() {
-    // The request handler must be the first middleware on the app
-    this.server.use(Sentry.Handlers.requestHandler());
+    if (process.env.NODE_ENV !== 'development') {
+      // The request handler must be the first middleware on the app
+      this.server.use(Sentry.Handlers.requestHandler());
+
+      /*
+        Using helmet middleware to prevent security issues related to the amount of
+        requests in the authentication route
+      */
+      this.server.use(helmet());
+
+      /*
+        Using rate limit to prevent security issues - related to the amount of requests
+        in the rest of the app routes
+      */
+      this.server.use(RateLimit);
+
+      /* 
+        Enabling CORS for all the requests
+      */
+      this.server.use(cors());
+    }
 
     // Ready to receive request bodies in JSON format
     this.server.use(express.json());
@@ -33,7 +55,7 @@ class App {
     this.server.use(routes);
 
     // The error handler must be before any other error middleware and after all controllers
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'development') {
       this.server.use(Sentry.Handlers.errorHandler());
     }
   }

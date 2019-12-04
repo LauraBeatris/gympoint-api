@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { bruteForce } from './lib/Brute';
 
 /*
   Controllers
@@ -35,7 +36,12 @@ routes.get('/', (req, res) =>
 
 // Creating users, sessions
 routes.post('/users', UserValidator.store, UserController.store);
-routes.post('/sessions', SessionValidator.store, SessionController.store);
+routes.post(
+  '/sessions',
+  bruteForce.prevent,
+  SessionValidator.store,
+  SessionController.store
+);
 
 // Creating and listing checkins for an specific user
 routes.post('/students/:student_id/checkins', CheckinController.store);
