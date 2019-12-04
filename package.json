@@ -8,10 +8,7 @@
     "queue-dev": "NODE_ENV=development nodemon src/queue.js",
     "queue": "NODE_ENV=production node dist/queue.js",
     "start": "NODE_ENV=production node dist/server.js",
-    "build": "sucrase ./src -d ./dist --transforms imports",
-    "pretest": "NODE_ENV=test yarn sequelize db:migrate",
-    "test": "NODE_ENV=test jest",
-    "posttest": "NODE_ENV=test yarn sequelize db:migrate:undo:all"
+    "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
@@ -45,6 +42,7 @@
     "express-handlebars": "^3.1.0",
     "express-rate-limit": "^5.0.0",
     "helmet": "^3.21.2",
+    "ioredis": "^4.14.1",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "nodemailer": "^6.3.1",

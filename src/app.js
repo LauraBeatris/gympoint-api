@@ -1,7 +1,7 @@
 import './bootstrap';
 
 import express from 'express';
-import 
+import cors from 'cors';
 import helmet from 'helmet';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
@@ -26,7 +26,6 @@ class App {
 
   middlewares() {
     if (process.env.NODE_ENV !== 'development') {
-
       // The request handler must be the first middleware on the app
       this.server.use(Sentry.Handlers.requestHandler());
 
@@ -45,9 +44,8 @@ class App {
       /* 
         Enabling CORS for all the requests
       */
-      this.server.use(cors())
+      this.server.use(cors());
     }
-
 
     // Ready to receive request bodies in JSON format
     this.server.use(express.json());

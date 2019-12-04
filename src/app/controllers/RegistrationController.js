@@ -10,7 +10,6 @@ class RegistrationController {
     // Registration input data
     const { student_id, plan_id } = req.body;
     const { start_date } = req.body;
-    console.log(plan_id);
     // Running the service responsable for the logic of creating a registration
     const registration = await CreateRegistrationService.run({
       plan_id,

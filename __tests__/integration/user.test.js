@@ -1,4 +1,5 @@
 import request from 'supertest';
+import bcrypt from 'bcryptjs';
 
 import app from '../../src/app';
 import factory from '../factory';
@@ -6,9 +7,6 @@ import generateToken from '../util/generateToken';
 import truncate from '../util/truncate';
 
 describe('User', () => {
-  /*
-    Truncating database data before and after the tests
-  */
   beforeAll(async () => {
     await truncate();
   });

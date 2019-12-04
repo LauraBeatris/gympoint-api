@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import validate from '../../util/validate';
+import validate from '../util/validate';
 
 class SessionValidator {
   async store(req, res, next) {
