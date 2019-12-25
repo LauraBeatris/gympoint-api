@@ -44,6 +44,8 @@ class App {
       /* 
         Enabling CORS for all the requests
       */
+     // TODO -> Set address of the application
+     // this.server.use(cors({origin: 'https://somename.com'}));
       this.server.use(cors());
     }
 
