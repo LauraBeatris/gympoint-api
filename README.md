@@ -2,7 +2,6 @@
   <img alt="Gympoint" title="Gympoint" src=".github/logo.png" width="200px" style="border-radius:100px"/>
 </h1>
 
-<h2 style="color:red" align="center"> GymPoint </h3>
 <h3 align="center">
   Express Application for a Gym Management App
 </h3>
