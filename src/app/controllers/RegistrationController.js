@@ -10,6 +10,7 @@ class RegistrationController {
     // Registration input data
     const { student_id, plan_id } = req.body;
     const { start_date } = req.body;
+
     // Running the service responsable for the logic of creating a registration
     const registration = await CreateRegistrationService.run({
       plan_id,
@@ -75,7 +76,7 @@ class RegistrationController {
       where: { ...query },
       offset: (page - 1) * 10,
       limit: 10,
-      attributes: ['id', 'start_date', 'end_date', 'price'],
+      attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
       include: [
         {
           model: Plan,

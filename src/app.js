@@ -29,25 +29,24 @@ class App {
       // The request handler must be the first middleware on the app
       this.server.use(Sentry.Handlers.requestHandler());
 
-      /*
+      if (process.env.NODE_ENV !== 'production') {
+        /*
         Using helmet middleware to prevent security issues related to the amount of
         requests in the authentication route
       */
-      this.server.use(helmet());
+        this.server.use(helmet());
 
-      /*
-        Using rate limit to prevent security issues - related to the amount of requests
-        in the rest of the app routes
-      */
-      this.server.use(RateLimit);
-
-      /* 
-        Enabling CORS for all the requests
-      */
-     // TODO -> Set address of the application
-     // this.server.use(cors({origin: 'https://somename.com'}));
-      this.server.use(cors());
+        /*
+       Using rate limit to prevent security issues - related to the amount of requests
+       in the rest of the app routes
+     */
+        this.server.use(RateLimit);
+      }
     }
+
+    // TODO -> Set address of the application
+    // this.server.use(cors({origin: 'https://somename.com'}));
+    this.server.use(cors());
 
     // Ready to receive request bodies in JSON format
     this.server.use(express.json());

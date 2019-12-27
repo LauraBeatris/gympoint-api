@@ -24,9 +24,10 @@ class SessionController {
 
     // Returning user informations and the token with the id as the payload
     return res.json({
-      id,
-      name,
-      email,
+      user: {
+        name,
+        email,
+      },
       token: jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES,
       }),
