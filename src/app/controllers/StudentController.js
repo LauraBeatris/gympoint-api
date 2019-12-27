@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Student from '../models/Student';
 
 class StudentControler {
@@ -50,7 +51,12 @@ class StudentControler {
   }
 
   async index(req, res) {
-    const students = await Student.findAll();
+    const { q = '' } = req.query;
+
+    // Filtering the students if the query param of a name was passed
+    const students = q
+      ? await Student.findAll({ where: { name: { [Op.like]: `%${q}%` } } })
+      : await Student.findAll();
 
     return res.json(students);
   }
