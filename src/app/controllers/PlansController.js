@@ -105,7 +105,7 @@ class PlansController {
       where: { ...query },
       offset: (page - 1) * 10,
       limit: 10,
-      attributes: ['title', 'duration', 'price'],
+      attributes: ['id', 'title', 'duration', 'price'],
     });
     await Cache.set(cacheKey, plans);
 

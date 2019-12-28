@@ -58,7 +58,7 @@ class HelpOrderController {
       ],
     });
 
-    return res.json({ pendingQuestions });
+    return res.json(pendingQuestions);
   }
 }
 

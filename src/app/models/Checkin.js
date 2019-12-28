@@ -16,7 +16,8 @@ class Checkin extends Model {
         where: { student_id: user.student_id },
       });
 
-      user.checkin_message = `You have done ${numberOfCheckins.length}/5 checkins until now`;
+      user.checkin_message = `You've done ${numberOfCheckins.length +
+        1}/5 checkins until now`;
     });
   }
 

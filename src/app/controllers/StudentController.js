@@ -55,8 +55,13 @@ class StudentControler {
 
     // Filtering the students if the query param of a name was passed
     const students = q
-      ? await Student.findAll({ where: { name: { [Op.like]: `%${q}%` } } })
-      : await Student.findAll();
+      ? await Student.findAll({
+          where: {
+            name: { [Op.like]: `%${q}%` },
+          },
+          attributes: ['id', 'name', 'email', 'age'],
+        })
+      : await Student.findAll({ attributes: ['id', 'name', 'email', 'age'] });
 
     return res.json(students);
   }

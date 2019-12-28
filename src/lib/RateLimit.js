@@ -12,8 +12,8 @@ const config = new RateLimit({
   }),
   // Miliseconds interval to verify the amount of requests
   windowMs: 1000 * 60 * 15,
-  // The max amount of requests between the interval upabove
-  max: 100,
+  // The max amount of requests between the interval up above
+  max: 200,
 });
 
 export default config;

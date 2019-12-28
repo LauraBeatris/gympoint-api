@@ -1,7 +1,7 @@
 import HelpOrder from '../models/HelpOrder';
 import Student from '../models/Student';
 
-class QuestionController {
+class QuestionsController {
   async store(req, res) {
     const { student_id } = req.params;
 
@@ -53,8 +53,8 @@ class QuestionController {
       },
     });
 
-    return res.json({ helpOrders });
+    return res.json(helpOrders);
   }
 }
 
-export default new QuestionController();
+export default new QuestionsController();

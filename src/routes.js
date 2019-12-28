@@ -10,7 +10,7 @@ import StudentController from './app/controllers/StudentController';
 import PlansController from './app/controllers/PlansController';
 import RegistrationController from './app/controllers/RegistrationController';
 import CheckinController from './app/controllers/CheckinController';
-import StudentQuestionController from './app/controllers/StudentQuestionController';
+import StudentQuestionsController from './app/controllers/StudentQuestionsController';
 import AnswerOrderController from './app/controllers/AnswerOrderController';
 import AuthMiddleware from './app/middlewares/auth';
 
@@ -51,11 +51,11 @@ routes.get('/students/:student_id/checkins', CheckinController.index);
 routes.post(
   '/students/:student_id/help-orders',
   QuestionValidator.store,
-  StudentQuestionController.store
+  StudentQuestionsController.store
 );
 routes.get(
   '/students/:student_id/help-orders',
-  StudentQuestionController.index
+  StudentQuestionsController.index
 );
 
 routes.use(AuthMiddleware);
