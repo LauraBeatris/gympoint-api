@@ -53,7 +53,7 @@ class StudentControler {
   }
 
   async index(req, res) {
-    const { q = '', registrations } = req.query;
+    const { q = '' } = req.query;
 
     // Filtering the students if the query param of a name was passed
     const students = q

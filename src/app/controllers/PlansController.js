@@ -1,4 +1,6 @@
 import Plan from '../models/Plan';
+import Registration from '../models/Registration';
+
 import Cache from '../../lib/Cache';
 
 class PlansController {
@@ -9,9 +11,10 @@ class PlansController {
     const existingPlan = await Plan.findOne({ where: { title } });
 
     if (existingPlan) {
-      return res
-        .status(400)
-        .json({ err: "There's already a plan with that name" });
+      return res.status(400).json({
+        err: "There's already a plan with that name",
+        messageContent: 'Um plano com esse nome já existe. Tente novamente',
+      });
     }
 
     const { id } = await Plan.create({ title, duration, price });
@@ -42,9 +45,10 @@ class PlansController {
     if (title && title !== plan.title) {
       const planExist = await Plan.findOne({ where: { title } });
       if (planExist) {
-        return res
-          .status(400)
-          .json({ err: 'Already exists an plan with that title' });
+        return res.status(400).json({
+          err: "There's already a plan with that name",
+          messageContent: 'Um plano com esse nome já existe. Tente novamente',
+        });
       }
     }
 
@@ -59,6 +63,7 @@ class PlansController {
 
   async delete(req, res) {
     const { plan_id } = req.params;
+    console.log('plan id', plan_id);
 
     // Validating param
     if (!plan_id || !plan_id.match(/^-{0,1}\d+$/)) {
@@ -70,6 +75,19 @@ class PlansController {
 
     if (!plan) {
       return res.status(404).json({ error: 'Plan not found' });
+    }
+
+    // Verifying if there's a registration with that plan
+    const registrationExists = await Registration.findAll({
+      where: { plan_id: plan.id },
+    });
+    if (registrationExists.length > 0) {
+      return res.status(404).json({
+        error:
+          'A registration with that plan exists. Delete or edit the registration and then delete the plan.',
+        messageContent:
+          'Uma matrícula com esse plano esta cadastrada. Delete essa matrícula ou edite-a',
+      });
     }
 
     // Deleting the plan
