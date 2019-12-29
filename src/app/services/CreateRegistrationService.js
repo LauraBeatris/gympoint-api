@@ -29,7 +29,11 @@ class CreateRegistrationService {
 
     if (existingRegistration) {
       throw new Error(
-        'This user already have a registration. Update the current one or delete'
+        JSON.stringify({
+          err:
+            'This student already have a registration. Update the current one or delete',
+          contentMessage: 'Esse aluno já possui uma matrícula',
+        })
       );
     }
 
@@ -37,7 +41,10 @@ class CreateRegistrationService {
 
     if (!student) {
       throw new Error(
-        'This user already have a registration. Update the current one or delete'
+        JSON.stringify({
+          err: 'Student not found',
+          contentMessage: 'Aluno não encontrado',
+        })
       );
     }
 

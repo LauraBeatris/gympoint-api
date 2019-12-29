@@ -94,6 +94,7 @@ routes.put(
 );
 routes.delete('/registrations/:registration_id', RegistrationController.delete);
 routes.get('/registrations', RegistrationController.index);
+routes.get('/registrations/:registration_id', RegistrationController.show);
 
 // Answering questions of help orders from students
 routes.post(

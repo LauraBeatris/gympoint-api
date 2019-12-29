@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import Student from '../models/Student';
+import Registration from '../models/Registration';
 
 class StudentControler {
   async store(req, res) {
@@ -39,9 +40,10 @@ class StudentControler {
       });
 
       if (studentExists) {
-        return res
-          .status(400)
-          .json({ error: 'A student with that email already exists' });
+        return res.status(400).json({
+          error: 'A student with that email already exists',
+          messageContent: 'Um aluno com esse email já esta cadastrado.',
+        });
       }
     }
 
@@ -51,7 +53,7 @@ class StudentControler {
   }
 
   async index(req, res) {
-    const { q = '' } = req.query;
+    const { q = '', registrations } = req.query;
 
     // Filtering the students if the query param of a name was passed
     const students = q

@@ -61,6 +61,38 @@ class RegistrationController {
     });
   }
 
+  async show(req, res) {
+    const { registration_id } = req.params;
+
+    // Validating param
+    if (!registration_id) {
+      return res.status(400).json({ err: 'Registration id not provided' });
+    }
+
+    // Finding the registration
+    const registration = await Registration.findByPk(registration_id, {
+      attributes: ['id', 'start_date', 'end_date', 'price'],
+      include: [
+        {
+          model: Plan,
+          as: 'plan',
+          attributes: ['id', 'title', 'duration', 'price'],
+        },
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['id', 'name', 'email', 'age', 'height', 'weight'],
+        },
+      ],
+    });
+
+    if (!registration) {
+      return res.status(404).json({ error: 'Registration not found' });
+    }
+
+    return res.json(registration);
+  }
+
   async index(req, res) {
     const { page = 1, start_date, end_date, price, plan_id } = req.query;
 
