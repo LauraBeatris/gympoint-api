@@ -81,6 +81,26 @@ class PlansController {
     return res.json({ msg: `${plan.title} was successfully deleted` });
   }
 
+  async show(req, res) {
+    const { plan_id } = req.params;
+
+    // Validating param
+    if (!plan_id || !plan_id.match(/^-{0,1}\d+$/)) {
+      return res.status(400).json({ err: 'Plan id not provided' });
+    }
+
+    // Finding the plan
+    const plan = await Plan.findByPk(plan_id);
+
+    if (!plan) {
+      return res.status(404).json({ error: 'Plan not found' });
+    }
+
+    const { id, title, price, duration } = plan;
+
+    return res.json({ id, title, price, duration });
+  }
+
   async index(req, res) {
     const { page = 1, title, duration, price } = req.query;
 

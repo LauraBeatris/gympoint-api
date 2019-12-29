@@ -79,6 +79,7 @@ routes.get('/students/:student_id', StudentController.show);
 routes.post('/plans', PlansValidator.store, PlansController.store);
 routes.put('/plans/:plan_id', PlansValidator.update, PlansController.update);
 routes.delete('/plans/:plan_id', PlansController.delete);
+routes.get('/plans/:plan_id', PlansController.show);
 routes.get('/plans', PlansController.index);
 
 // Creating, updating, deleting and listing registrations
