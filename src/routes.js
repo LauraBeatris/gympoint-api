@@ -36,12 +36,17 @@ routes.get('/', (req, res) =>
 
 // Creating users, sessions
 routes.post('/users', UserValidator.store, UserController.store);
-routes.post(
-  '/sessions',
-  bruteForce.prevent,
-  SessionValidator.store,
-  SessionController.store
-);
+
+if (process.env.NODE_ENV === 'production') {
+  routes.post(
+    '/sessions',
+    bruteForce.prevent,
+    SessionValidator.store,
+    SessionController.store
+  );
+} else {
+  routes.post('/sessions', SessionValidator.store, SessionController.store);
+}
 
 // Creating and listing checkins for an specific user
 routes.post('/students/:student_id/checkins', CheckinController.store);

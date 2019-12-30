@@ -22,7 +22,7 @@ class SessionController {
 
     const { id, name } = user;
 
-    // Returning user informations and the token with the id as the payload
+    // Returning user profile informations and the token with the id as the payload
     return res.json({
       user: {
         name,
