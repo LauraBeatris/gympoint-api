@@ -16,6 +16,7 @@ class CheckinController {
   // Listing the checkin of an specific user
   async index(req, res) {
     const { student_id } = req.params;
+    const { page = 1 } = req.query;
 
     // Validating student id
     if (!student_id) {
@@ -31,7 +32,7 @@ class CheckinController {
 
     const checkins = await Checkin.findAll({
       where: { student_id },
-      attributes: ['id', 'created_at', 'updated_at'],
+      attributes: ['id', 'created_at'],
       include: [
         {
           model: Student,
@@ -39,9 +40,11 @@ class CheckinController {
           attributes: ['id', 'name', 'email', 'weight', 'height'],
         },
       ],
+      offset: (page - 1) * 7,
+      limit: 7,
     });
 
-    return res.json({ checkins });
+    return res.json(checkins);
   }
 }
 
