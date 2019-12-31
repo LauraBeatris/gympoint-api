@@ -74,7 +74,10 @@ class StudentControler {
     if (!student_id || !student_id.match(/^-{0,1}\d+$/))
       return res.status(400).json({ err: 'Student id not provided' });
 
-    const student = await Student.findByPk(student_id);
+    const student = await Student.findOne({
+      where: { id: student_id },
+      attributes: ['id', 'name', 'email', 'age', 'weight', 'height'],
+    });
 
     if (!student) {
       return res.status(404).json({ err: 'Student not found' });

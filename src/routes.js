@@ -63,13 +63,16 @@ routes.get(
   StudentQuestionsController.index
 );
 
+// Showing the user data
+routes.get('/students/:student_id', StudentController.show);
+
 routes.use(AuthMiddleware);
 
 // Showing user data
 routes.get('/user', UserController.show);
 routes.put('/users', UserValidator.update, UserController.update);
 
-// Creating, updating, deleting, listing and showing students
+// Creating, updating, deleting, listing
 routes.post('/students', StudentValidator.store, StudentController.store);
 routes.put(
   '/students/:student_id',
@@ -78,7 +81,6 @@ routes.put(
 );
 routes.delete('/students/:student_id', StudentController.delete);
 routes.get('/students', StudentController.index);
-routes.get('/students/:student_id', StudentController.show);
 
 // Creating, updating, deleting and listing plans
 routes.post('/plans', PlansValidator.store, PlansController.store);
