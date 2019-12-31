@@ -22,10 +22,16 @@ class CreateCheckinService {
     existingCheckins.forEach(checkin => {
       if (getDay(checkin.createdAt) === getDay(Date.now())) {
         throw new Error(
-          `You have already done an checkin at ${format(
-            checkin.createdAt,
-            'dd/mm/yyyy'
-          )}`
+          JSON.stringify({
+            err: `You have already done an checkin at ${format(
+              checkin.createdAt,
+              "dd/mm/yyyy '-' pp"
+            )}`,
+            contentMessage: `Você já fez um checkin hoje - ${format(
+              checkin.createdAt,
+              "dd/mm/yyyy '-' pp"
+            )}`,
+          })
         );
       }
     });
