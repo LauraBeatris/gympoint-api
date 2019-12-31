@@ -70,10 +70,15 @@ class StudentControler {
 
   async show(req, res) {
     const { student_id } = req.params;
+
     if (!student_id || !student_id.match(/^-{0,1}\d+$/))
       return res.status(400).json({ err: 'Student id not provided' });
 
     const student = await Student.findByPk(student_id);
+
+    if (!student) {
+      return res.status(404).json({ err: 'Student not found' });
+    }
 
     return res.json(student);
   }
