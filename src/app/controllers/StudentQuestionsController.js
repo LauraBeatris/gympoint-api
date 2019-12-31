@@ -45,12 +45,13 @@ class QuestionsController {
     // Listing all the help orders made by the student
     const helpOrders = await HelpOrder.findAll({
       where: { student_id },
-      attributes: ['id', 'question', 'answer', 'answer_at'],
+      attributes: ['id', 'question', 'answer', 'answer_at', 'created_at'],
       include: {
         model: Student,
         as: 'student',
         attributes: ['id', 'name', 'email', 'weight', 'height'],
       },
+      order: [['answer_at', 'ASC']],
     });
 
     return res.json(helpOrders);

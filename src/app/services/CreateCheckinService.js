@@ -51,9 +51,9 @@ class CreateCheckinService {
       throw new Error('Limit of checkins was reached');
     }
 
-    const checkin = await Checkin.create({ student_id });
+    const { id, createdAt } = await Checkin.create({ student_id });
 
-    return checkin;
+    return { id, student_id, createdAt };
   }
 }
 
