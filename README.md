@@ -47,6 +47,9 @@
 
 Apply all the important concepts of a Rest API with Express and Sequelize ORM, using a services like PostgreSQL, MongoDB, Redis with BeeQueue and Nodemailer with Mailgun. 
 
+## :incoming_envelope: Routes
+Soon.
+
 ## Status Codes
 
 Gympoint returns the following status codes in its API:
