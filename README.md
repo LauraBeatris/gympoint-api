@@ -24,6 +24,7 @@
 <p align="center">
   <a href="#rocket-about-the-project">About the project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#ballot_box_with_check-goals">Goals</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#runner-instalattion">Installation</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-licence">Licence</a>
 </p>
 
@@ -46,6 +47,21 @@
 ## :ballot_box_with_check: Goals
 
 Apply all the important concepts of a Rest API with Express and Sequelize ORM, using a services like PostgreSQL, MongoDB, Redis with BeeQueue and Nodemailer with Mailgun. 
+
+## :runner: Installation 
+
+```   
+  // 1 - Git Clone
+  
+  // 2 - Run the services (Be sure to have docker and docker-compose installed)
+  docker-compose up -d 
+  
+  // 2 - Once the services are running, its time to install the dependencies
+  yarn install
+  
+  // 3 - Run the application 
+  yarn start
+  ```
 
 ## :incoming_envelope: Routes
 Soon.
