@@ -28,13 +28,15 @@
 </p>
 
 ## :rocket: About the project
-  Api for a **Gym Management Application (Admin Interface).** As a admin, you're able to see the list of students, registrations and plans, as well edting/registering them. Answering and see the help orders that're pending. 
+  Api for a **Gym Management Application** As a admin, you're able to see the list of students, registrations and plans, as well edting/registering them. Answering and see the help orders that're pending. 
   
   Future features: 
     - Trainings made by the Personal Trainer
     - Students can access some datas that show how they've been improving in their trainings
  
  To see the **student interface**, click here to take a look in the mobile aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-mobile)
+  To see the **admin interface**, click here to take a look in the web aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-web)
+
 
 ## :ballot_box_with_check: Goals
 
