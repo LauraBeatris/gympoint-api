@@ -8,16 +8,16 @@
 
 
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/laurabeatris/projects_store?color=brightgreen&logoColor=black">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/LauraBeatris/gympoint-api?color=%23EE4D64">
 
   <a href="https://www.linkedin.com/in/laurabeatris/">
-    <img alt="Made by Laura Beatris" src="https://img.shields.io/badge/made%20by-laurabeatris-brightgreen">
+    <img alt="Made by Laura Beatris" src="https://img.shields.io/badge/made%20by-laurabeatris-%23EE4D64">
   </a>
 
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
+  <img alt="License" src="https://img.shields.io/badge/licence-MIT-%23EE4D64">
 
   <a href="https://github.com/LauraBeatris/projects_store/stargazers">
-    <img alt="Stargazers" src="https://img.shields.io/github/stars/LauraBeatris/projects_store?color=brightgreen&style=social">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/LauraBeatris/gympoint-api?color=%23EE4D64">
   </a>
 </p>
 
@@ -28,13 +28,13 @@
 </p>
 
 ## :rocket: About the project
-  Api for a Gym Management Application (Admin Interface). As a admin, you're able to see the list of students, registrations and plans, as well edting/registering them. Answering and see the help orders that're pending. 
+  Api for a **Gym Management Application (Admin Interface).** As a admin, you're able to see the list of students, registrations and plans, as well edting/registering them. Answering and see the help orders that're pending. 
   
   Future features: 
     - Trainings made by the Personal Trainer
     - Students can access some datas that show how they've been improving in their trainings
  
- To see the student interface, click here to take a look in the mobile aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-mobile)
+ To see the **student interface**, click here to take a look in the mobile aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-mobile)
 
 ## :ballot_box_with_check: Goals
 
