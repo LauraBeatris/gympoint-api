@@ -60,7 +60,10 @@ Apply all the important concepts of a Rest API with Express and Sequelize ORM, u
   yarn install
   
   // 3 - Run the application 
-  yarn start
+  yarn dev
+  
+  // 4 - Run the application queue for the mail job
+  yarn queue-dev
   ```
 
 ## :incoming_envelope: Routes
