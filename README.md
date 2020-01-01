@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-  Express Application for a Gym Management App
+  Gym Management App made with Express 
 </h3>
 
 
@@ -28,7 +28,10 @@
 </p>
 
 ## :rocket: About the project
-  Api for a **Gym Management Application** As a admin, you're able to see the list of students, registrations and plans, as well edting/registering them. Answering and see the help orders that're pending. 
+  Rest API of the **Gympoint System**. As a admin, you're able to see the list of students, registrations and plans, as well edting/creating new ones. Also, answer and see the help orders that're pending.
+  <br>
+ As a student, you're able to do checkins, help orders and also get to know what the intructors answered. Students're allowed to do only 5 checkins per week. 
+  
   
   Future features: 
     - Trainings made by the Personal Trainer
@@ -36,7 +39,7 @@
  
  To see the **student interface**, click here to take a look in the mobile aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-mobile)
  <br>
-  To see the **admin interface**, click here to take a look in the web aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-web)
+  To see the **admin interface**, click here to take a look in the web aplicattion: [Gympoint Web](https://github.com/LauraBeatris/gympoint-web)
 
 
 ## :ballot_box_with_check: Goals
