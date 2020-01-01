@@ -53,7 +53,7 @@ class StudentControler {
   }
 
   async index(req, res) {
-    const { q = '' } = req.query;
+    const { q = '', page = 1 } = req.query;
 
     // Filtering the students if the query param of a name was passed
     const students = q
@@ -62,8 +62,14 @@ class StudentControler {
             name: { [Op.like]: `%${q}%` },
           },
           attributes: ['id', 'name', 'email', 'age'],
+          offset: (page - 1) * 10,
+          limit: 10,
         })
-      : await Student.findAll({ attributes: ['id', 'name', 'email', 'age'] });
+      : await Student.findAll({
+          attributes: ['id', 'name', 'email', 'age'],
+          offset: (page - 1) * 10,
+          limit: 10,
+        });
 
     return res.json(students);
   }
