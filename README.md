@@ -34,6 +34,7 @@
   
   
   Future features: 
+    <br>
     - Trainings made by the Personal Trainer
     - Students can access some datas that show how they've been improving in their trainings
  
