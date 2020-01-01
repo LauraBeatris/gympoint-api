@@ -53,17 +53,21 @@ Apply all the important concepts of a Rest API with Express and Sequelize ORM, u
 ```   
   // 1 - Git Clone
   
-  // 2 - Run the services (Be sure to have docker and docker-compose installed)
+  // 2 - Copy the .env.example and set the environment variables
+  cp .env.example .env
+  
+  // 3 - Run the services (Be sure to have docker and docker-compose installed)
   docker-compose up -d 
   
-  // 2 - Once the services are running, its time to install the dependencies
+  // 4 - Once the services are running, its time to install the dependencies
   yarn install
   
-  // 3 - Run the application 
+  // 5 - Run the application 
   yarn dev
   
-  // 4 - Run the application queue for the mail job
+  // 6 - Run the application queue for the mail job
   yarn queue-dev
+
   ```
 
 ## :incoming_envelope: Routes
