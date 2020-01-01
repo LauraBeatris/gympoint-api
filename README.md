@@ -35,6 +35,7 @@
     - Students can access some datas that show how they've been improving in their trainings
  
  To see the **student interface**, click here to take a look in the mobile aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-mobile)
+ <br>
   To see the **admin interface**, click here to take a look in the web aplicattion: [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-web)
 
 
