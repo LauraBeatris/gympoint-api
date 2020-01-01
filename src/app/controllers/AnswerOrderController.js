@@ -46,6 +46,8 @@ class HelpOrderController {
 
   // Listing all the questions that aren't answered yet
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const pendingQuestions = await HelpOrder.findAll({
       where: { answer: { [Op.eq]: null } },
       attributes: ['id', 'question', 'answer', 'answer_at'],
@@ -56,6 +58,8 @@ class HelpOrderController {
           attributes: ['id', 'name', 'email', 'weight', 'height'],
         },
       ],
+      offset: (page - 1) * 10,
+      limit: 10,
     });
 
     return res.json(pendingQuestions);
