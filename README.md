@@ -91,7 +91,7 @@ Gympoint returns the following status codes in its API:
 
 # :bug: Issues
 
-Feel free to **file a new issue** with a respective title and description on the the [Gympoint Web](https://github.com/LauraBeatris/gympoint-api/issues) repository. If you already found a solution to your problem, **i would love to review your pull request**! Have a look at our [contribution guidelines](https://github.com/LauraBeatris/gympoint-api/blob/master/CONTRIBUTING.md) to find out about the coding standards.
+Feel free to **file a new issue** with a respective title and description on the the [Gympoint API](https://github.com/LauraBeatris/gympoint-api/issues) repository. If you already found a solution to your problem, **i would love to review your pull request**! Have a look at our [contribution guidelines](https://github.com/LauraBeatris/gympoint-api/blob/master/CONTRIBUTING.md) to find out about the coding standards.
 
 # :tada: Contributing
 
