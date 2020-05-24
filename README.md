@@ -57,7 +57,7 @@ SSH URLs provide access to a Git repository via SSH, a secure protocol. If you h
 
 # :runner: Getting Started
 
-Run the transactions in order to configure all the database schemas
+Run the transactions in order to configure the database schema
 
 ```npx sequelize-cli db:migrate```
 
@@ -99,7 +99,7 @@ Check out the [contributing](https://github.com/LauraBeatris/gympoint-api/blob/m
 
 # :closed_book: License
 
-Released in 2020.
+Released in 2019.
 This project is under the [MIT license](https://github.com/LauraBeatris/gympoint-api/master/LICENSE).
 
 Made with love by [Laura Beatris](https://github.com/LauraBeatris) 💜🚀
