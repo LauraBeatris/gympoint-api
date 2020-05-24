@@ -52,7 +52,7 @@ In order to explore the others, feel free to click in the links above:
 
 SSH URLs provide access to a Git repository via SSH, a secure protocol. If you have a SSH key registered in your Github account, clone the project using this command:
 
-```git clone git@github.com:LauraBeatris/gympoint-api-api.git```
+```git clone git@github.com:LauraBeatris/gympoint-api.git```
 
 
 # :runner: Getting Started
