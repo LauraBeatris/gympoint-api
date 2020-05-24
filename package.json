@@ -11,8 +11,11 @@
     "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@sucrase/jest-plugin": "^2.0.0",
     "@types/jest": "^24.0.23",
+    "cz-conventional-changelog": "^3.2.0",
     "eslint": "^6.7.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.5.0",
@@ -21,7 +24,9 @@
     "eslint-plugin-prettier": "^3.1.1",
     "factory-girl": "^5.0.4",
     "faker": "^4.1.0",
+    "husky": "^4.2.5",
     "jest": "^24.9.0",
+    "lint-staged": "^10.2.6",
     "nodemon": "^1.19.4",
     "sequelize-cli": "^5.5.1",
     "sucrase": "^3.10.1",
