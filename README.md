@@ -42,7 +42,7 @@ It's important to mention that this is one of the applications from the **Gympoi
 
 In order to explore the others, feel free to click in the links above:
 - [Gympoint Mobile](https://github.com/LauraBeatris/gympoint-mobile)
-- [Gympoint Web](https://github.com/LauraBeatris/gympoint-api)
+- [Gympoint Web](https://github.com/LauraBeatris/gympoint-web)
 
 # :construction_worker: Installation
 
