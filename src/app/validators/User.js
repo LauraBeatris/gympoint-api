@@ -14,8 +14,7 @@ class UserValidator {
         .min(6),
     });
 
-    // Validating the input data
-    await validate(req, next, req.body, schema);
+    await validate(res, next, req.body, schema);
   }
 
   async update(req, res, next) {
