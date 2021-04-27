@@ -58,7 +58,7 @@
     "pg-hstore": "^2.3.3",
     "prettier": "^1.18.2",
     "rate-limit-redis": "^1.7.0",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "sequelize": "^5.21.1",
     "sqlite3": "^4.1.0",
     "youch": "^2.0.10",
