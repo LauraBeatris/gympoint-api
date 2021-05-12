@@ -50,7 +50,7 @@
     "ioredis": "^4.14.1",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
-    "nodemailer": "^6.3.1",
+    "nodemailer": "^6.4.16",
     "nodemailer-express-handlebars": "^3.1.0",
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemailer-ses-transport": "^1.5.1",
